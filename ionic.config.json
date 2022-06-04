@@ -1,0 +1,7 @@
+{
+  "name": "Manufy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
