@@ -1,0 +1,40 @@
+<ion-content class="ion-padding-start ion-padding-end" fullscreen>
+
+  <ion-text color="primary">
+    <h1> <strong>Manufy</strong> </h1>
+  </ion-text>
+  <h6>Sign in to start working</h6>
+
+  <ion-img class="ion-margin-vertical" src="assets/engineer.svg"></ion-img>
+
+  <ion-item>
+    <ion-input placeholder="Email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-input type="password" placeholder="Password"></ion-input>
+  </ion-item>
+
+  <ion-item lines="none">
+    <div class="wo-status">
+      <ion-text class="ion-margin-end">
+        <p>Remember me</p>
+      </ion-text> 
+      <ion-checkbox></ion-checkbox>
+    </div>
+    <ion-label slot="end">
+        <a href="">Forgot Password ?</a>
+    </ion-label>
+  </ion-item>
+
+  <ion-button [routerLink]="['/home']" class="ion-margin-vertical" color="warning" expand="block"> <ion-text color="light">
+    LOGIN
+  </ion-text> </ion-button>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-text-center">
+      <p> <small>© 2022 Manufy. All rights reserved.</small><br><small>António F. Oliveira</small> </p>  
+  </ion-toolbar>
+</ion-footer>

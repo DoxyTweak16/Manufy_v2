@@ -1,0 +1,22 @@
+ion-img::part(image) {
+    width:  80%; 
+    height: 80%;
+    margin: auto;
+  }
+
+.execute_btn {
+    position: fixed;
+    left: 0;
+    bottom: 40px;
+    right: 0;
+}
+
+ion-item-divider{
+  margin-top: 0px;
+  min-height: 1px!important;
+}
+
+
+ion-textarea {
+  --background: #fff;
+}

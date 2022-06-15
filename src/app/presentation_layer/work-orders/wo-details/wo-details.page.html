@@ -1,0 +1,181 @@
+<ion-header translucent>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/work-orders"></ion-back-button>
+    </ion-buttons>
+    <ion-title slot="end">Work Order details</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="True" >
+
+  <!-- Título e 'status' -->
+  <div class="ion-padding">
+    <h1> <strong>{{(work_order|async)?.title}}</strong> </h1>
+    <p> <strong>Status</strong> </p>
+  </div>
+  
+  <!-- status flow image -->
+  <ion-img src="{{ (work_order|async)?.status === 'Waiting' ? 'assets/wo_waiting.png' : 
+    (work_order|async)?.status === 'In progress' ? 'assets/wo_progress.png' : 'assets/wo_closed.png' }}" 
+    class="ion-justifiy-content-center"></ion-img>
+
+  
+  <ion-segment class="ion-padding-top" (ionChange)="segmentChanged($event)" [disabled]="(work_order|async)?.status === 'Waiting'" value="{{ ( (work_order|async)?.status === 'Closed' || (work_order|async)?.status === 'In progress') ? 'fill' : 'details'}}">
+    <ion-segment-button value="details">
+      <ion-label>Details</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="fill">
+      <ion-label>Fill</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Detalhes da Ordem de Trabalho -->
+  <div *ngIf="segment === 'details'">
+    <!-- Dados Ativo e OT -->
+    <ion-grid class="ion-padding-start">
+      <ion-row>
+        <ion-col size="3">
+          <ion-label>
+            <h2><strong>Date</strong></h2>
+          </ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>
+            <h2>Some date</h2>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          <ion-label>
+            <h2><strong>Asset</strong></h2>
+          </ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>
+            <h2> <a href="">{{(work_order|async)?.asset}}</a> </h2>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          <ion-label>
+            <h2><strong>Location</strong></h2>
+          </ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>
+            <h2>01 - Edifício 1 - Piso 2</h2>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          <ion-label>
+            <h2><strong>Sector</strong></h2>
+          </ion-label>
+        </ion-col>
+        <ion-col>
+          <ion-label>
+            <h2>Manutenção Automatismos</h2>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- Imagem, se aplicável -->
+
+    <ion-item-divider class="ion-padding"></ion-item-divider>
+
+    <!-- Reporte -->
+    <ion-grid class="ion-padding">
+      <ion-row>
+        <ion-col>
+          <strong>Reporter</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          {{(work_order|async)?.reporter_name}}
+        </ion-col>
+        <ion-col>
+          {{(work_order|async)?.reporter_phone}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <strong>Description</strong>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          {{(work_order|async)?.description}}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Preenchimento da Ordem de trabalho -->
+  <div class="ion-padding" *ngIf="segment === 'fill'">
+    
+    <div>
+      <p> <strong>Maintenance Summary</strong> </p>
+    </div>
+    <ion-item lines="none">
+      <ion-textarea clearInput placeholder="Details go here." rows=4 inputmode="text" enterkeyhint="done" spellcheck="true" required="true"></ion-textarea>
+    </ion-item>
+
+    <div>
+      <p> <strong>Labor</strong> </p>
+    </div>
+    <ion-button (click)="pickLabor()">Hello</ion-button>
+
+    <div>
+      <p> <strong>Asset Unavailability</strong> </p>
+    </div>
+
+    <ion-item lines="none">
+      <ion-avatar slot="start">
+        <img src="assets/escada_rolante.jpg"/>
+      </ion-avatar>
+      <ion-label>
+        <h2>{{(work_order|async)?.asset}}</h2>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-grid>
+        <ion-row class="ion-align-items-center ion-justify-content-evenly">
+          <ion-col class="ion-text-center">
+            <ion-text>
+              From
+            </ion-text>
+          </ion-col>
+          <ion-col class="ion-text-center">
+            <ion-text>
+              22:22
+            </ion-text>
+          </ion-col>
+          <ion-col class="ion-text-center">
+            <ion-text>
+              to
+            </ion-text>
+          </ion-col>
+          <ion-col>
+            <ion-input placeholder="start" type="time"></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+
+
+  </div>
+
+  <!-- Botão de seguimento 
+  <ion-button class="ion-padding execute_btn" color="primary" expand="block" (click) = "buttonClick()">
+    Execute Work Order
+  </ion-button>
+  -->
+
+</ion-content>

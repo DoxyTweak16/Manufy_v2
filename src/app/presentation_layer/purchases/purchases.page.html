@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <h1>
+        Purchases
+      </h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="True">
+
+  <ion-searchbar showCancelButton="focus"></ion-searchbar>
+
+  <ion-list >
+    <ion-item-divider></ion-item-divider>
+    <ion-item-sliding>
+      <ion-item class="ion-align-items-start">
+        <ion-label> 
+          <h2><strong>Spares Material Elétrico</strong></h2>
+          <p> <strong>150 €</strong> </p>
+          <p>Submitted by: <a href="">Manuel Joaquim</a> </p>
+          <ion-text color="warning">
+            <h2> <strong>AWAITING APPROVAL</strong> </h2>   
+          </ion-text>
+        </ion-label>
+        <ion-label slot="end">
+          <p>01/02/03 12:59</p>
+        </ion-label>
+      </ion-item>
+      <ion-item-options side="start">
+        <ion-item-option color="success">Approve</ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="end">
+        <ion-item-option color="danger">Reject</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item>
+      <ion-label> 
+        <h2><strong>Material Consumo</strong></h2>
+        <p> <strong>100 €</strong> </p>
+        <p>Submitted by: <a href="">José Cruz</a> </p>
+        <ion-text color="success">
+          <h2> <strong>APPROVED</strong> </h2>   
+        </ion-text>  
+      </ion-label>
+      <ion-label slot="end">
+        <p>01/02/03 12:59</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

@@ -24,3 +24,32 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+:root {
+	--ion-color-primary: #064ACB;
+	--ion-color-primary-rgb: 6,74,203;
+
+	--ion-color-secondary: #366ED8;
+	--ion-color-secondary-rgb: 54,110,216;
+
+	--ion-color-tertiary: #5260ff;
+	--ion-color-tertiary-rgb: 82,96,255;
+
+	--ion-color-success: #6BCB77;
+	--ion-color-success-rgb: 107,203,119;
+
+	--ion-color-warning: #F3A953;
+	--ion-color-warning-rgb: 243,169,83;
+
+	--ion-color-danger: #FF6B6B;
+	--ion-color-danger-rgb: 255,107,107;
+
+}
+
+.wo-status {
+    display: flex;
+}
+
+a {
+    text-decoration: none !important;
+}

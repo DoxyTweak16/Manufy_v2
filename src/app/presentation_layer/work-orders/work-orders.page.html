@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <h1>
+        Work Orders
+      </h1>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="True">
+
+  <ion-searchbar showCancelButton="focus"></ion-searchbar>
+
+  <ion-item-divider></ion-item-divider> 
+
+  <ion-list *ngFor="let wo of work_orders">
+
+     <!-- <ion-item-divider></ion-item-divider> -->
+
+    <ion-item class="ion-align-items-start" [routerLink]="['/wo-details', wo.$key]"> <!-- href="/wo-details/{{wo.$key}}" -->
+      <!-- <ion-badge color="warning">New</ion-badge> -->
+      <ion-label>
+        <h2><strong>{{wo.title}}</strong></h2>
+        <div class="wo-status">
+          <ion-icon class="ion-padding-end" color="{{wo.status === 'Waiting' ? 'warning' : (wo.status === 'In progress' ? 'secondary' : 'medium') }}" 
+            name="{{wo.status === 'Waiting' ? 'lock-open' : (wo.status === 'In progress' ? 'sync' : 'lock-closed') }}" slot="start">
+          </ion-icon> 
+          <ion-text color="{{wo.status === 'Waiting' ? 'warning' : (wo.status === 'In progress' ? 'secondary' : 'medium') }}" >
+            <p>{{wo.status}}</p>
+          </ion-text>
+        </div>        
+      </ion-label>
+      <ion-label slot="end">
+        <p>{{wo.date}}</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>
