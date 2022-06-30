@@ -14,7 +14,7 @@ const routes: Routes = [
       },
       {
         path: 'assets',
-        loadChildren: () => import('../assets/assets.module').then(m => m.AssetsPageModule)
+        loadChildren: () => import('../assets_machinery/assets.module').then(m => m.AssetsPageModule)
       },
       {
         path: 'purchases',

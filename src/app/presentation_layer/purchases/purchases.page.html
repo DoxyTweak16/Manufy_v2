@@ -14,41 +14,33 @@
 
   <ion-list >
     <ion-item-divider></ion-item-divider>
-    <ion-item-sliding>
-      <ion-item class="ion-align-items-start">
+
+    <ion-item-sliding  *ngFor="let po of purchaseOrders | async">
+      
+      <ion-item class="ion-align-items-start" [routerLink]="['/purchase-order', po.$key]">
         <ion-label> 
-          <h2><strong>Spares Material Elétrico</strong></h2>
-          <p> <strong>150 €</strong> </p>
-          <p>Submitted by: <a href="">Manuel Joaquim</a> </p>
-          <ion-text color="warning">
-            <h2> <strong>AWAITING APPROVAL</strong> </h2>   
+          <h2><strong>{{po.name}}</strong></h2>
+          <ion-text color="primary"> <p><strong>{{po.total_cost}} €</strong></p> </ion-text>
+          <ion-text> <p>Submitted by: <a>{{po.requester_username}}</a> </p> </ion-text>
+          <ion-text color="{{ po.status === 'Awaiting Approval' ? 'warning' : (po.status === 'Rejected' ? 'danger' : 'success') }}">
+            <h2> <strong>{{po.status}}</strong> </h2>   
           </ion-text>
         </ion-label>
         <ion-label slot="end">
-          <p>01/02/03 12:59</p>
+          <p>Some date</p>
         </ion-label>
       </ion-item>
-      <ion-item-options side="start">
-        <ion-item-option color="success">Approve</ion-item-option>
-      </ion-item-options>
-      <ion-item-options side="end">
-        <ion-item-option color="danger">Reject</ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
 
-    <ion-item>
-      <ion-label> 
-        <h2><strong>Material Consumo</strong></h2>
-        <p> <strong>100 €</strong> </p>
-        <p>Submitted by: <a href="">José Cruz</a> </p>
-        <ion-text color="success">
-          <h2> <strong>APPROVED</strong> </h2>   
-        </ion-text>  
-      </ion-label>
-      <ion-label slot="end">
-        <p>01/02/03 12:59</p>
-      </ion-label>
-    </ion-item>
+      <ng-container *ngIf="managerProfile && po.status === 'Awaiting Approval' ">
+        <ion-item-options side="start">
+          <ion-item-option color="success" (click)="approve_po(po.$key)">Approve</ion-item-option>
+        </ion-item-options>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="reject_po(po.$key)">Reject</ion-item-option>
+        </ion-item-options>
+      </ng-container>
+
+    </ion-item-sliding>
 
   </ion-list>
 

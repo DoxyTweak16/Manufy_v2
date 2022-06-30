@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { PickLaborComponent } from './pick-labor.component';
+import { LaborPickPage } from './labor-pick.page';
 
-describe('PickLaborComponent', () => {
-  let component: PickLaborComponent;
-  let fixture: ComponentFixture<PickLaborComponent>;
+describe('LaborPickPage', () => {
+  let component: LaborPickPage;
+  let fixture: ComponentFixture<LaborPickPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PickLaborComponent ],
+      declarations: [ LaborPickPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PickLaborComponent);
+    fixture = TestBed.createComponent(LaborPickPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

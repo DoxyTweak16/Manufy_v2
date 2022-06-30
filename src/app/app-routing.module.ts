@@ -24,8 +24,16 @@ const routes: Routes = [
     loadChildren: () => import('./presentation_layer/work-orders/wo-details/wo-details.module').then( m => m.WoDetailsPageModule)
   },
   {
+    path: 'purchase-order/:id',
+    loadChildren: () => import('./presentation_layer/purchases/po-details/po-details.module').then( m => m.PoDetailsPageModule )
+  },
+  {
     path: '**',
     loadChildren: () => import('./presentation_layer/not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+  {
+    path: 'labor-pick',
+    loadChildren: () => import('./presentation_layer/work-orders/wo-details/labor-pick/labor-pick.module').then( m => m.LaborPickPageModule)
   }
 ];
 

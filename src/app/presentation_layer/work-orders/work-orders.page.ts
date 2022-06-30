@@ -22,6 +22,8 @@ export class WorkOrdersPage implements OnInit {
         return {
           $key: e.payload.doc.id,
           asset: e.payload.doc.data()['asset'],
+          asset_desc: e.payload.doc.data()['asset_desc'],
+          asset_location: e.payload.doc.data()['asset_location'],
           asset_unavailability: e.payload.doc.data()['asset_unavailability'],
           date: new Date(e.payload.doc.data()['date'].toDate()).toLocaleString([], { year:'numeric', month:'2-digit', day:'2-digit', hour12: false, hour: '2-digit', minute: '2-digit' }),
           description: e.payload.doc.data()['description'],
@@ -32,6 +34,8 @@ export class WorkOrdersPage implements OnInit {
           status: e.payload.doc.data()['status'],
           summary: e.payload.doc.data()['summary'],
           title: e.payload.doc.data()['title'],
+          owner: e.payload.doc.data()['owner'],
+          sector: e.payload.doc.data()['sector']
         };
       });
     });

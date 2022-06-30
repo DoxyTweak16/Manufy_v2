@@ -1,0 +1,35 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Labor</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+
+  <ion-searchbar (ionInput)="handleInput($event)" showCancelButton="focus"></ion-searchbar>
+
+  <form #laborForm="ngForm" (submit)="laborSelection(laborForm.value)">
+    <fieldset>
+
+      <ion-list>
+        <ion-item *ngFor="let t of technicians | async" lines="none">
+          <ion-label>
+            <h2>{{t.username}}</h2>
+          </ion-label>
+          <input type="checkbox" ngModel name="{{t.username}}" value="selected">
+        </ion-item>
+      </ion-list>
+
+    </fieldset>
+
+    <ion-button type="submit" class="ion-padding execute_btn" color="primary" expand="block">
+      Add
+    </ion-button>
+
+  </form>
+  
+</ion-content>
+
