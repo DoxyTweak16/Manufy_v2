@@ -9,7 +9,7 @@
 
   <ion-toolbar>
 
-    <ion-segment [(ngModel)]="selectedSegment">
+    <ion-segment (ionChange)="segmentChanged($event)" value="monthly">
       <ion-segment-button value="monthly">
         <ion-label>Monthly</ion-label>
       </ion-segment-button>
@@ -25,7 +25,12 @@
 
 <ion-content class="ion-padding-start ion-padding-end" fullscreen="True">
 
-  <div *ngIf="selectedSegment === 'monthly' ">
+  <ng-container *ngIf="selectedSegment === 'monthly'; then monthBlock; else dayBlock">
+
+  </ng-container>
+
+  <!-- Vista mensal -->
+  <ng-template #monthBlock>
 
     <div class="grid">
       <div class="grid-item">
@@ -99,9 +104,10 @@
       </ion-item>
   
     </ion-list>
-  </div>
+  </ng-template>
 
-  <div *ngIf="selectedSegment === 'daily' ">
+  <!-- Vista diária -->
+  <ng-template #dayBlock>
 
     <h5>Day selector</h5>
 
@@ -128,8 +134,9 @@
           </div>       
         </ion-label>
       </ion-item>
+
     </ion-list>
 
-  </div>
+  </ng-template>
 
 </ion-content>

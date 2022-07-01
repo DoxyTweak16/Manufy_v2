@@ -14,4 +14,9 @@ export class MaintenancePage implements OnInit {
   ngOnInit() {
   }
 
+  segmentChanged(ev: any) {
+    this.selectedSegment = ev.detail.value;
+    console.log("Segment changed ", ev.detail.value);
+  }
+
 }
