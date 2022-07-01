@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable, of } from 'rxjs';
 
 import { PurchaseOrder } from './purchase-order';
@@ -9,7 +10,7 @@ import { PurchaseOrder } from './purchase-order';
 })
 export class PoRepoService {
 
-  constructor(private afs : AngularFirestore) { }
+  constructor(private afs : AngularFirestore, private storage : AngularFireStorage) { }
 
   getAllPurchaseOrders() {
     return this.afs.collection<PurchaseOrder>('purchase_orders');
@@ -17,7 +18,12 @@ export class PoRepoService {
   }
 
   getPurchaseOrder(id : string) {
+    return this.afs.doc<PurchaseOrder>(`purchase_orders/${id}`);
+  }
 
+  getProductImg(img_path : string) {
+    const ref = this.storage.ref(img_path);
+    return ref.getDownloadURL() as Observable<string | null>;
   }
 
   updatePoStatus(id: string, changes: Partial<PurchaseOrder>) {

@@ -21,7 +21,8 @@
     class="ion-justifiy-content-center"></ion-img>
 
   <!-- Separadores do segmento -->
-  <ion-segment class="ion-padding-top" (ionChange)="segmentChanged($event)" [disabled]="(work_order|async)?.status === 'Waiting'" value="{{ ( (work_order|async)?.status === 'Closed' || (work_order|async)?.status === 'In progress') ? 'fill' : 'details'}}">
+  <ion-segment class="ion-padding-top" (ionChange)="segmentChanged($event)" 
+    [disabled]="(work_order|async)?.status === 'Waiting'" value="{{ ( (work_order|async)?.status === 'Closed' || (work_order|async)?.status === 'In progress') ? 'fill' : 'details'}}">
     <ion-segment-button value="details">
       <ion-label>Details</ion-label>
     </ion-segment-button>

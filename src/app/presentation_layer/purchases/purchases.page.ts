@@ -5,7 +5,8 @@ import { PurchaseOrder } from 'src/app/data_access_layer/purchase-order';
 import { PurchaseService } from 'src/app/domain_layer/purchase.service';
 
 import { map } from 'rxjs/operators';
-import { ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { CreatePurchOrderPage } from './create-purch-order/create-purch-order.page';
 
 @Component({
   selector: 'app-purchases',
@@ -17,9 +18,10 @@ export class PurchasesPage implements OnInit {
   private purchaseOrdersCollection: AngularFirestoreCollection<PurchaseOrder>;
   purchaseOrders : Observable<PurchaseOrder[]>;
 
-  public managerProfile = true; //TODO: Automatizar reconhecimento de utilizador com perfil de gestor ou não
+  public managerProfile = true;    //TODO: Automatizar reconhecimento de utilizador com perfil de gestor ou não
+  private userName = "afoliveira"; //TODO: Automatizar obtenção do username da sessão
 
-  constructor(private poService : PurchaseService, public toastController : ToastController) { }
+  constructor(private poService : PurchaseService, public toastController : ToastController, private modalController : ModalController ) { }
 
   ngOnInit() {
     this.purchaseOrdersCollection = this.poService.getAllPurchaseOrders();
@@ -35,13 +37,13 @@ export class PurchasesPage implements OnInit {
   approve_po(item) {
     const newStatus = "Approved";
     console.log("Approve WO: ", item);
-    this.poService.approvePO(item);
+    this.poService.approvePO(item, this.userName);
   }
 
   reject_po(item) {
     const newStatus = "Rejected";
     console.log("Reject WO: ", item);
-    this.poService.rejectPO(item);
+    this.poService.rejectPO(item, this.userName);
     this.presentToast(newStatus);
   }
 
@@ -53,6 +55,17 @@ export class PurchasesPage implements OnInit {
       color: "secondary"
     });
     toast.present();
+  }
+
+  async createPO() {
+    const modal = await this.modalController.create({
+      component: CreatePurchOrderPage
+    });
+
+    //TODO: Não esquecer eventual método para receber dados após dismiss
+
+    return await modal.present();
+
   }
 
 }

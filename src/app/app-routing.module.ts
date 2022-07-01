@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path: 'labor-pick',
     loadChildren: () => import('./presentation_layer/work-orders/wo-details/labor-pick/labor-pick.module').then( m => m.LaborPickPageModule)
+  },
+  {
+    path: 'create-purch-order',
+    loadChildren: () => import('./presentation_layer/purchases/create-purch-order/create-purch-order.module').then( m => m.CreatePurchOrderPageModule)
   }
 ];
 

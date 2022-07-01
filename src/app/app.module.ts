@@ -14,6 +14,8 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 
 import { AngularFireModule } from '@angular/fire/compat';
 
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,13 +23,16 @@ import { AngularFireModule } from '@angular/fire/compat';
   imports: [
     BrowserModule, 
     IonicModule.forRoot(), 
-    AppRoutingModule, 
-    //provideFirebaseApp(() => initializeApp(environment.firebase)), Não funciona assim 
+    AppRoutingModule,
+    AngularFireStorageModule,
     AngularFireModule.initializeApp(environment.firebase),
     provideAuth(() => getAuth()), 
     provideFirestore(() => getFirestore())
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: BUCKET, useValue: 'gs://manufy-b1352.appspot.com/' }
+  ],
   bootstrap: [AppComponent],
 })
 
