@@ -21,7 +21,7 @@ export class PoDetailsPage implements OnInit {
   public purch_order : Observable<PurchaseOrder>;
   //public purch_order : PurchaseOrder;
 
-  public imgUrl;
+  //public imgUrl;
 
   constructor(private activatedRoute : ActivatedRoute, private poService : PurchaseService, private alertController : AlertController) {  }
 

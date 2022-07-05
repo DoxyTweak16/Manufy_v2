@@ -26,36 +26,14 @@
   <ion-list >
     <ion-item-divider></ion-item-divider>
 
-    <ion-item>
+    <ion-item *ngFor="let a of assets | async">
       <ion-avatar slot="start">
-        <img src="assets/retroexcavadora.jpg" />
+        <img [src]="a.img | async" />
       </ion-avatar>
       <ion-label>
-        <h2><strong>Viatura Retroexcavadora CAT 06</strong></h2>
-        <p>410 11D010 015</p>
+        <h2><strong>{{a.name}}</strong></h2>
+        <p>{{a.$key}}</p>
         <p>Manutenção Automóvel</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="assets/aparafusadora_bosch.jpg" />
-      </ion-avatar>
-      <ion-label>
-        <h2><strong>Aparafusadora Bosch Pro GDR 18V-160</strong></h2>
-        <p>410 11D010 016</p>
-        <p>Manutenção Elétrica</p>
-      </ion-label>
-    </ion-item>
-
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="assets/escada_rolante.jpg" />
-      </ion-avatar>
-      <ion-label>
-        <h2><strong>Escada Rolante 4 TKE tugela</strong></h2>
-        <p>410 11D010 018</p>
-        <p>Manutenção Automatismos</p>
       </ion-label>
     </ion-item>
 
