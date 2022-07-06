@@ -85,7 +85,7 @@
     <ion-item-divider></ion-item-divider>
     <ion-item *ngFor="let product of (purch_order | async)?.products | keyvalue">
       <ion-avatar slot="start">
-        <ion-img [src]=" product.value.img" alt="Product image"></ion-img>
+        <ion-img [src]=" product.value.img | async" alt="item"></ion-img>
       </ion-avatar>
       <ion-label>
         <h3>{{ product.key }}</h3>

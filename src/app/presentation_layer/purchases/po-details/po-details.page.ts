@@ -16,7 +16,7 @@ import { PurchaseService } from 'src/app/domain_layer/purchase.service';
 export class PoDetailsPage implements OnInit {
 
   private po_id       : string;
-  private poDoc       : any;
+  //private poDoc       : any;
 
   public purch_order : Observable<PurchaseOrder>;
   //public purch_order : PurchaseOrder;

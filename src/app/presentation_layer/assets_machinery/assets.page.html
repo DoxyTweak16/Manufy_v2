@@ -26,7 +26,7 @@
   <ion-list >
     <ion-item-divider></ion-item-divider>
 
-    <ion-item *ngFor="let a of assets | async">
+    <ion-item *ngFor="let a of assets | async" [routerLink]="['/asset-details', a.$key]">
       <ion-avatar slot="start">
         <img [src]="a.img | async" />
       </ion-avatar>

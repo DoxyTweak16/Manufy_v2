@@ -28,6 +28,10 @@ const routes: Routes = [
     loadChildren: () => import('./presentation_layer/purchases/po-details/po-details.module').then( m => m.PoDetailsPageModule )
   },
   {
+    path: 'asset-details/:id',
+    loadChildren: () => import('./presentation_layer/assets_machinery/asset-details/asset-details.module').then( m => m.AssetDetailsPageModule )
+  },
+  {
     path: '**',
     loadChildren: () => import('./presentation_layer/not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
