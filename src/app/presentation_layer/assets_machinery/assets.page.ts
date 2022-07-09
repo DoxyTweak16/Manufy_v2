@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Asset } from 'src/app/data_access_layer/asset';
@@ -13,9 +15,14 @@ import { AssetService } from 'src/app/domain_layer/asset.service';
 export class AssetsPage implements OnInit {
 
   private assetsCollection : AngularFirestoreCollection<Asset>; //reference to Firestore Collection
-  assets : Observable<Asset[]>;
+  private asset_scan_options = {
+    resultDisplayDuration: 0,
+    prompt: "Place device tag inside scan area."
+  };
 
-  constructor(private assetService : AssetService) { }
+  public assets : Observable<Asset[]>;
+
+  constructor(private assetService : AssetService, private barcodeScanner : BarcodeScanner, private router : Router) { }
 
   ngOnInit() {
     this.assetsCollection = this.assetService.getAllAssets()
@@ -31,6 +38,20 @@ export class AssetsPage implements OnInit {
         return { $key, ...data };
       }))
     );
+  }
+
+  scan() {
+
+    this.barcodeScanner.scan(this.asset_scan_options)
+      .then( barcodeData => {
+        const device_tag_content = barcodeData.text;
+        console.log("Barcode data: ", device_tag_content);
+        this.router.navigate(['/asset-details', device_tag_content]);
+      })
+      .catch( err => {
+        console.log("Error: ", err);
+      });
+
   }
 
 }

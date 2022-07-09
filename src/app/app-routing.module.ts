@@ -1,47 +1,51 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { canActivate, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    redirectTo: 'tabs',
   },
   {
     path: 'login',
-    loadChildren: () => import('./presentation_layer/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./presentation_layer/login/login.module').then( m => m.LoginPageModule),
   },
   {
     path: 'tabs',
-    loadChildren: () => import('./presentation_layer/tabs/tabs.module').then( m => m.TabsPageModule)
-  },
-  {
-    path: 'home',
-    redirectTo: 'tabs'
+    loadChildren: () => import('./presentation_layer/tabs/tabs.module').then( m => m.TabsPageModule),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
     path: 'wo-details/:id',
-    loadChildren: () => import('./presentation_layer/work-orders/wo-details/wo-details.module').then( m => m.WoDetailsPageModule)
+    loadChildren: () => import('./presentation_layer/work-orders/wo-details/wo-details.module').then( m => m.WoDetailsPageModule),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
     path: 'purchase-order/:id',
-    loadChildren: () => import('./presentation_layer/purchases/po-details/po-details.module').then( m => m.PoDetailsPageModule )
+    loadChildren: () => import('./presentation_layer/purchases/po-details/po-details.module').then( m => m.PoDetailsPageModule ),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
     path: 'asset-details/:id',
-    loadChildren: () => import('./presentation_layer/assets_machinery/asset-details/asset-details.module').then( m => m.AssetDetailsPageModule )
+    loadChildren: () => import('./presentation_layer/assets_machinery/asset-details/asset-details.module').then( m => m.AssetDetailsPageModule ),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
     path: '**',
-    loadChildren: () => import('./presentation_layer/not-found/not-found.module').then( m => m.NotFoundPageModule)
+    loadChildren: () => import('./presentation_layer/not-found/not-found.module').then( m => m.NotFoundPageModule),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
     path: 'labor-pick',
-    loadChildren: () => import('./presentation_layer/work-orders/wo-details/labor-pick/labor-pick.module').then( m => m.LaborPickPageModule)
+    loadChildren: () => import('./presentation_layer/work-orders/wo-details/labor-pick/labor-pick.module').then( m => m.LaborPickPageModule),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
     path: 'create-purch-order',
-    loadChildren: () => import('./presentation_layer/purchases/create-purch-order/create-purch-order.module').then( m => m.CreatePurchOrderPageModule)
+    loadChildren: () => import('./presentation_layer/purchases/create-purch-order/create-purch-order.module').then( m => m.CreatePurchOrderPageModule),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
   }
 ];
 

@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Manufy",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

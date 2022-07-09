@@ -12,14 +12,12 @@
 
   <ion-searchbar showCancelButton="focus"></ion-searchbar>
 
-  <ion-item class="ion-margin-vertical" lines="none" button="True">
+  <ion-item class="ion-margin-vertical" lines="none" button (click)="scan()" >
     <ion-icon size="large" src="assets/qr-code-scan.svg" class="ion-margin-end" color="primary"></ion-icon>
     <ion-label>
-
       <ion-text color="primary">
         <h2> <strong>SCAN ASSET</strong> </h2>
       </ion-text>
-      
     </ion-label>
   </ion-item>
 
@@ -33,7 +31,7 @@
       <ion-label>
         <h2><strong>{{a.name}}</strong></h2>
         <p>{{a.$key}}</p>
-        <p>Manutenção Automóvel</p>
+        <p>{{a.sector_desc}}</p>
       </ion-label>
     </ion-item>
 

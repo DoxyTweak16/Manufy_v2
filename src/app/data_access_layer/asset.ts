@@ -3,5 +3,6 @@ export interface Asset {
     name : string,
     location : string,
     location_history : Map< string, any >,
-    img : any
+    img : any,
+    sector_desc : string
 }
