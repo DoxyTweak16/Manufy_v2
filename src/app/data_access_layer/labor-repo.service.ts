@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Observable } from 'rxjs';
 import { Technician } from './technician';
 
@@ -8,7 +9,7 @@ import { Technician } from './technician';
 })
 export class LaborRepoService {
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private storage : AngularFireStorage) { }
 
   getAllTechnicians() {
     return this.firestore.collection<Technician>("technician");
@@ -21,5 +22,10 @@ export class LaborRepoService {
   getTechnicianByID(id : string) {
    
   }
+
+  getProfileImg(img_path : string) {
+    const ref = this.storage.ref(img_path);
+    return ref.getDownloadURL() as Observable<string | null>;
+  };
 
 }

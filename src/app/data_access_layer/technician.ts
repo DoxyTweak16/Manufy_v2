@@ -3,6 +3,7 @@ export interface Technician {
     name: string,
     surname: string,
     username: string,
+    img: any,
     sector: string,
     sector_desc: string,
     sector_team: string,

@@ -8,6 +8,7 @@ import { Technician } from 'src/app/data_access_layer/technician';
 import { LaborService } from 'src/app/domain_layer/labor.service';
 
 import { Output, EventEmitter } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-labor-pick',
@@ -27,12 +28,25 @@ export class LaborPickPage implements OnInit {
 
   ngOnInit() {
     this.techniciansCollection = this.labor_service.getAllTechnicians();
-    this.technicians = this.techniciansCollection.valueChanges();
+    this.technicians = this.techniciansCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as Technician;
+
+        //Obter link da imagem de perfil de cada técnico
+        let profile_img_path = data.img;
+        data.img = this.labor_service.getProfileImg(profile_img_path);
+
+        return { $key, ...data };
+
+      }) )
+    );
   }
 
   laborSelection(data: NgForm) {
     for (const property in data) {
       if (data[property] === true) {
+        console.log(this.technicians);
         console.log(`${property} selected as WO labor.`);
         this.woLabor.push(property);
       }

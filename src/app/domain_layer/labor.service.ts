@@ -20,4 +20,9 @@ export class LaborService {
    return this.labor_repo.getTechnicianByID(id);
   }
 
+  getProfileImg(full_profile_img_path : string) {
+    const img_path = full_profile_img_path.substr(full_profile_img_path.indexOf('technician'));
+    return this.labor_repo.getProfileImg(img_path);
+  }
+
 }

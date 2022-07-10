@@ -32,7 +32,7 @@ export class AssetsPage implements OnInit {
         const data = a.payload.doc.data() as Asset;
 
         //Obter link da imagem do asset
-        let img_path = data.img
+        let img_path = data.img;
         data.img = this.assetService.getAssetImg(img_path);
 
         return { $key, ...data };
@@ -40,12 +40,13 @@ export class AssetsPage implements OnInit {
     );
   }
 
-  scan() {
+  scanDeviceTag() {
 
     this.barcodeScanner.scan(this.asset_scan_options)
       .then( barcodeData => {
         const device_tag_content = barcodeData.text;
         console.log("Barcode data: ", device_tag_content);
+        //TODO: Confirmar se documento existe e só depois, em caso afirmativo, reencaminhar
         this.router.navigate(['/asset-details', device_tag_content]);
       })
       .catch( err => {

@@ -17,4 +17,14 @@ export class WorkOrderService {
     return this.wo_repo.getWO(id);
   }
 
+  woToInProgress(id : string, technician_username : string) {
+    const newStatus = "In progress";
+    this.wo_repo.updateWorkOrderStatus(id, {status: newStatus, owner: technician_username});
+  }
+
+  woToClosed(id: string, technician_username : string) {
+    const newStatus = "Closed";
+    this.wo_repo.updateWorkOrderStatus(id, {status: newStatus, owner: technician_username});
+  }
+
 }
