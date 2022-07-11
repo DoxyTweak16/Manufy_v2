@@ -34,7 +34,6 @@ export class WoDetailsPage implements OnInit {
   public work_order : Observable<WorkOrder>;
   public woLabor = []; //Onde são guardados os nomes dos técnicos que participaram na Ordem de Trabalho. Esta lista é usada para fazer query à DB.
   public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
-  public fillWOForm : FormGroup;
   
 
   constructor(private fb: FormBuilder, private woService : WorkOrderService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController) { }
@@ -47,22 +46,7 @@ export class WoDetailsPage implements OnInit {
     //Obter do Firestore o documento onde constam os dados desta Work Order
     this.woDoc = this.woService.get_work_order(this.wo_id).doc<WorkOrder>('/'+this.wo_id);
     this.work_order = this.woDoc.valueChanges();
-
-    this.initializeForm();
   
-  }
-
-  initializeForm() {
-    this.fillWOForm = this.fb.group({
-      maintenance_summary: '',
-      laborRecords: this.fb.array([]),
-      unavailability_startTime: '',
-      unavailability_endTime: ''
-    });
-  }
-
-  get laborRecords() {
-    return this.fillWOForm.get('laborRecords') as FormArray;
   }
 
   segmentChanged(ev) {
@@ -113,15 +97,6 @@ export class WoDetailsPage implements OnInit {
           //  continue;
           //}
           this.woLabor.push(returnedLabor.data[idx]);
-
-          const laborRecord = this.fb.group({
-            technician_name: ['', Validators.required],
-            hours          : ['', Validators.required]
-          });
-
-          console.log("laborRecord push");
-          this.laborRecords.push(laborRecord);
-
         }
         
         //Depois de obter os nomes dos técnicos que participaram na Ordem de Trabalho, devo buscar os seus registos à DB para exibir
@@ -143,7 +118,7 @@ export class WoDetailsPage implements OnInit {
   }
 
   async closeWorkOrder(data: NgForm) {
-    console.log(this.fillWOForm.value);
+    console.log(data.value);
     const alert = await alertController.create({
       header: 'Change Work Order Status',
       message: 'Please confirm that you intend to change this work order status to "Closed".',

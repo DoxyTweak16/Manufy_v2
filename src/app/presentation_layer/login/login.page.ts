@@ -12,6 +12,8 @@ export class LoginPage implements OnInit {
 
   public loginErrMsg = "";
 
+  public showSpinner = false;
+
   formLogin = this.fb.group({
     email : ['',  {
       validators: [Validators.required, Validators.email]
@@ -34,12 +36,14 @@ export class LoginPage implements OnInit {
       console.log("Form status is invalid. Check if fields are correctly filled.")
     } 
     else {
-      
+      this.showSpinner = true;
       this.userService.login(this.formLogin.value)
       .then( response => {
+        this.showSpinner = false;
         this.router.navigate(['/']);
       })
       .catch( error => {
+        this.showSpinner = false;
         console.log("Login error: ", error.message);
       });
 

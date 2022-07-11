@@ -136,14 +136,14 @@
   <!-- Preenchimento da Ordem de trabalho -->
   <ng-container *ngIf="segment === 'fill'">
 
-    <form [formGroup]="fillWOForm" (submit)="closeWorkOrder(fillWOForm.value)" class="ion-padding" >
+    <form class="ion-padding" #f="ngForm" (ngSubmit)="closeWorkOrder(f)" novalidate>
       <!-- Relatório de intervenção - textbox -->
       <div>
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
       <ion-item lines="none">
         <ion-textarea clearInput placeholder="Details go here." rows=4 inputmode="text" enterkeyhint="done"
-          spellcheck="true" required="true" formControlName="maintenance_summary">
+          spellcheck="true" required="true" name="maintenance_summary" ngModel>
         </ion-textarea>
       </ion-item>
 
@@ -169,19 +169,34 @@
   
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>Hours</h6>
+                  <h6>From</h6>
                 </ion-col>
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input placeholder="time" type="time" name="{{t.username}}"></ion-input>
+                  <ion-input type="date" name="{{t.username}}_startTime" ngModel></ion-input>
+                </ion-col>
+                <ion-col class="ion-no-padding ion-no-margin">
+                  <ion-input type="time" name="{{t.username}}_endTime" ngModel></ion-input>
+                </ion-col>
+              </ion-row>
+
+              <ion-row class="ion-align-items-center ion-justify-content-evenly">
+                <ion-col class="ion-no-padding ion-no-margin">
+                  <h6>to</h6>
+                </ion-col>
+                <ion-col class="ion-no-padding ion-no-margin">
+                  <ion-input type="date" name="{{t.username}}_startTime" ngModel></ion-input>
+                </ion-col>
+                <ion-col class="ion-no-padding ion-no-margin">
+                  <ion-input type="time" name="{{t.username}}_endTime" ngModel></ion-input>
                 </ion-col>
               </ion-row>
   
             </ion-grid>
   
-
           <ion-button fill="clear" (click)="deleteLaborEntry(t.username)">
             <ion-icon name="trash" color="dark"></ion-icon>
           </ion-button>
+          
         </ion-item>
 
         <ion-item lines="none">
@@ -192,7 +207,7 @@
 
       </ion-list>
 
-      <!-- Indisponibilidade equipamento -->
+      <!-- Indisponibilidade ativo -->
       <div>
         <p> <strong>Asset Unavailability</strong> </p>
       </div>
@@ -216,9 +231,7 @@
               </ion-text>
             </ion-col>
             <ion-col>
-              <ion-text>
-                <ion-input placeholder="start" type="time" formControlName="unavailability_startTime"></ion-input>
-              </ion-text>
+              <ion-input placeholder="start" type="time" name="unavailability_startTime" ngModel></ion-input>
             </ion-col>
             <ion-col>
               <ion-text>
@@ -226,7 +239,7 @@
               </ion-text>
             </ion-col>
             <ion-col>
-              <ion-input placeholder="start" type="time" formControlName="unavailability_endTime"></ion-input>
+              <ion-input placeholder="start" type="time" name="unavailability_endTime" ngModel></ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
