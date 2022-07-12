@@ -32,10 +32,11 @@ export class WoDetailsPage implements OnInit {
   public segment: string = "details";
   public wo_id : string;
   public work_order : Observable<WorkOrder>;
-  public woLabor = []; //Onde são guardados os nomes dos técnicos que participaram na Ordem de Trabalho. Esta lista é usada para fazer query à DB.
-  public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
-  
 
+  public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
+
+  public woLabor : Array<string> = []; //Onde são guardados os nomes do técnicos escolhidos para registo de mão-de-obra.
+  
   constructor(private fb: FormBuilder, private woService : WorkOrderService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController) { }
 
 
@@ -93,9 +94,9 @@ export class WoDetailsPage implements OnInit {
       if (returnedLabor.data.length > 0) {
         console.log("Returned labor not null.")
         for (const idx in returnedLabor.data) {
-          //if (this.woLabor.includes(returnedLabor.data[idx])) { //Verificar duplicados
-          //  continue;
-          //}
+          if (this.woLabor.includes(returnedLabor.data[idx])) { //Verificar duplicados
+            continue;
+          }
           this.woLabor.push(returnedLabor.data[idx]);
         }
         
@@ -118,7 +119,6 @@ export class WoDetailsPage implements OnInit {
   }
 
   async closeWorkOrder(data: NgForm) {
-    console.log(data.value);
     const alert = await alertController.create({
       header: 'Change Work Order Status',
       message: 'Please confirm that you intend to change this work order status to "Closed".',
@@ -133,7 +133,7 @@ export class WoDetailsPage implements OnInit {
           handler: () => {
             console.log("Confirm work order status change");
             this.segment = "fill";
-            console.log(data);
+            this.woService.closeWorkOrder(data.value);
           }
         }],
     });

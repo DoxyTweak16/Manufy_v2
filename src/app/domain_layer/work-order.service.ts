@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { WoRepoService } from '../data_access_layer/wo-repo.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkOrderService {
+  closeWorkOrder(data: NgForm) {
+    console.log(data)
+  }
 
   constructor(private wo_repo : WoRepoService) { }
 

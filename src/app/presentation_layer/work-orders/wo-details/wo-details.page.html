@@ -154,40 +154,38 @@
 
       <!-- Introduzir mão de obra -->
       <ion-list>
-        <ion-item *ngFor="let t of (labor_technicians | async)" lines="none">
-          <ion-avatar slot="start">
-            <img [src]="t.img | async" />
-          </ion-avatar>
+        <ion-item *ngFor="let t of (labor_technicians | async)">
+
+          <ng-container *ngIf="t.img | async; else loading">
+            <ion-avatar slot="start">
+              <img [src]="t.img | async" />
+            </ion-avatar>
+          </ng-container>
+          <ng-template #loading><ion-spinner name="crescent"></ion-spinner></ng-template>
 
             <ion-grid>
 
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>{{t.username}}</h6>
+                  <h6>{{t.name}} {{t.surname}}</h6>
                 </ion-col>
               </ion-row>
   
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>From</h6>
+                  <h6>Hours</h6>
                 </ion-col>
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input type="date" name="{{t.username}}_startTime" ngModel></ion-input>
-                </ion-col>
-                <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input type="time" name="{{t.username}}_endTime" ngModel></ion-input>
+                  <ion-input type="number" name="{{t.username}}_hours" ngModel></ion-input>
                 </ion-col>
               </ion-row>
 
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>to</h6>
+                  <h6>Minutes</h6>
                 </ion-col>
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input type="date" name="{{t.username}}_startTime" ngModel></ion-input>
-                </ion-col>
-                <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input type="time" name="{{t.username}}_endTime" ngModel></ion-input>
+                  <ion-input type="number" name="{{t.username}}_minutes" ngModel></ion-input>
                 </ion-col>
               </ion-row>
   
