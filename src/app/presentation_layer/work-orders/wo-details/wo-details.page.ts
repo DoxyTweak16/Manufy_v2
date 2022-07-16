@@ -32,10 +32,13 @@ export class WoDetailsPage implements OnInit {
   public segment: string = "details";
   public wo_id : string;
   public work_order : Observable<WorkOrder>;
+  public work_order_status : string;
 
   public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
 
   public woLabor : Array<string> = []; //Onde são guardados os nomes do técnicos escolhidos para registo de mão-de-obra.
+
+  public disableInputs = false; // Controla se o botão de adiconar labor está ativo (para OT's In Progress) ou desabilitado (OT's fechadas)
   
   constructor(private fb: FormBuilder, private woService : WorkOrderService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController) { }
 
@@ -46,7 +49,15 @@ export class WoDetailsPage implements OnInit {
 
     //Obter do Firestore o documento onde constam os dados desta Work Order
     this.woDoc = this.woService.get_work_order(this.wo_id).doc<WorkOrder>('/'+this.wo_id);
-    this.work_order = this.woDoc.valueChanges();
+    this.work_order = this.woDoc.snapshotChanges().pipe(
+      map( a => {
+        const $key = a.payload.id;
+        const data = a.payload.data() as WorkOrder;
+        //Obter link das imagens de profile de cada técnico
+        this.work_order_status = data.status;
+        this.disableInputs = (data.status === "In progress") ? false : true ;
+        return { $key, ...data };
+      }))
   
   }
 
@@ -92,7 +103,7 @@ export class WoDetailsPage implements OnInit {
     modal.onDidDismiss().then((returnedLabor) => {
 
       if (returnedLabor.data.length > 0) {
-        console.log("Returned labor not null.")
+        //console.log("Returned labor not null.")
         for (const idx in returnedLabor.data) {
           if (this.woLabor.includes(returnedLabor.data[idx])) { //Verificar duplicados
             continue;
@@ -112,7 +123,7 @@ export class WoDetailsPage implements OnInit {
             return { $key, ...data };
           })), 
           take(1));
-        console.log(this.woLabor);
+        //console.log(this.woLabor);
       }
     });
     return await modal.present();
@@ -133,7 +144,7 @@ export class WoDetailsPage implements OnInit {
           handler: () => {
             console.log("Confirm work order status change");
             this.segment = "fill";
-            this.woService.closeWorkOrder(data.value);
+            this.woService.woToClosed(this.wo_id, data.value, this.woLabor);
           }
         }],
     });

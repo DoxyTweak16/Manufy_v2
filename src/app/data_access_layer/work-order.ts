@@ -7,7 +7,7 @@ export interface WorkOrder {
     date: string;
     description: string;
     images: [string];
-    labor: Map<string, number>;
+    labor: Map<string, string>;
     reporter_name: string;
     reporter_phone: string;
     status: string;

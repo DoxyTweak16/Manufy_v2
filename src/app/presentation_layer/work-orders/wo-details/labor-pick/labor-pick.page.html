@@ -16,9 +16,15 @@
 
       <ion-list>
         <ion-item *ngFor="let t of technicians | async" lines="none">
-          <ion-avatar slot="start">
-            <img [src]="t.img | async" />
-          </ion-avatar>
+
+          <!-- Exibir imagens dos técnicos. Se ainda não estiverem disponíveis, é exibido o spinner -->
+          <ng-container *ngIf="t.img | async; else loading">
+            <ion-avatar slot="start">
+              <img [src]="t.img | async" />
+            </ion-avatar>
+          </ng-container>
+          <ng-template #loading><ion-spinner name="crescent" color="primary"></ion-spinner></ng-template>
+
           <ion-label>
             <h2>{{t.username}}</h2>
             <h3>{{t.category}}</h3>

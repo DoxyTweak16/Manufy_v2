@@ -16,12 +16,11 @@ ion-item-divider{
   min-height: 1px!important;
 }
 
-
-ion-textarea {
-  --background: #fff;
-}
-
 ion-input {
   background-color: #F2F3F3;
-  border-radius: 15%;
+  border-radius: 2%;
+}
+
+ion-item {
+  border-radius: 2%;
 }

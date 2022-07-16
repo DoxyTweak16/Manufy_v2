@@ -16,9 +16,21 @@
   </div>
   
   <!-- status flow image -->
-  <ion-img src="{{ (work_order|async)?.status === 'Waiting' ? 'assets/wo_waiting.png' : 
-    (work_order|async)?.status === 'In progress' ? 'assets/wo_progress.png' : 'assets/wo_closed.png' }}" 
-    class="ion-justifiy-content-center" alt="Status image"></ion-img>
+  <ng-container *ngIf="(work_order|async)?.status === 'Waiting'; else progress">
+    <ion-img src="assets/wo_waiting.png"></ion-img>
+  </ng-container>
+  <ng-template #progress>
+    <ng-container *ngIf="(work_order|async)?.status === 'In progress'; else closed">
+      <ion-img src="assets/wo_progress.png"></ion-img>
+    </ng-container>
+  </ng-template>
+  <ng-template #closed>
+      <ng-container *ngIf="(work_order|async)?.status === 'Closed'; else loading">
+        <ion-img src="assets/wo_closed.png"></ion-img>
+      </ng-container>
+  </ng-template>
+  <ng-template #loading><ion-spinner name="crescent" color="primary"></ion-spinner></ng-template>
+
 
   <!-- Separadores do segmento -->
   <ion-segment class="ion-padding-top" (ionChange)="segmentChanged($event)" 
@@ -32,7 +44,7 @@
   </ion-segment>
 
   <!-- Detalhes da Ordem de Trabalho -->
-  <ng-container *ngIf="segment === 'details' ">
+  <ng-container *ngIf="segment === 'details'">
     <!-- Dados Ativo e OT -->
     <ion-grid class="ion-padding-start">
       <ion-row>
@@ -134,15 +146,15 @@
   </ng-container>
 
   <!-- Preenchimento da Ordem de trabalho -->
-  <ng-container *ngIf="segment === 'fill'">
+  <ng-container *ngIf="segment === 'fill' && (work_order|async)?.status === 'In progress'">
 
     <form class="ion-padding" #f="ngForm" (ngSubmit)="closeWorkOrder(f)" novalidate>
       <!-- Relatório de intervenção - textbox -->
       <div>
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
-      <ion-item lines="none">
-        <ion-textarea clearInput placeholder="Details go here." rows=4 inputmode="text" enterkeyhint="done"
+      <ion-item lines="none" color="light">
+        <ion-textarea clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
           spellcheck="true" required="true" name="maintenance_summary" ngModel>
         </ion-textarea>
       </ion-item>
@@ -161,7 +173,7 @@
               <img [src]="t.img | async" />
             </ion-avatar>
           </ng-container>
-          <ng-template #loading><ion-spinner name="crescent"></ion-spinner></ng-template>
+          <ng-template #loading><ion-spinner name="crescent" color="parimary"></ion-spinner></ng-template>
 
             <ion-grid>
 
@@ -172,20 +184,11 @@
               </ion-row>
   
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
-                <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>Hours</h6>
+                <ion-col class="">
+                  <ion-input type="number" name="{{t.username}}_hours" placeholder=" hours " min="0" ngModel required="true"></ion-input>
                 </ion-col>
-                <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input type="number" name="{{t.username}}_hours" ngModel></ion-input>
-                </ion-col>
-              </ion-row>
-
-              <ion-row class="ion-align-items-center ion-justify-content-evenly">
-                <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>Minutes</h6>
-                </ion-col>
-                <ion-col class="ion-no-padding ion-no-margin">
-                  <ion-input type="number" name="{{t.username}}_minutes" ngModel></ion-input>
+                <ion-col class="">
+                  <ion-input type="number" name="{{t.username}}_minutes" placeholder=" minutes " min="0" value="0" ngModel required="true"></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -223,21 +226,11 @@
       <ion-item lines="none">
         <ion-grid>
           <ion-row class="ion-align-items-center ion-justify-content-evenly">
-            <ion-col>
-              <ion-text>
-                From
-              </ion-text>
+            <ion-col class="">
+              <ion-input type="number" name="unavailabilityHours" placeholder=" hours " min="0" ngModel required="true" [disabled]="disableInputs" ></ion-input>
             </ion-col>
-            <ion-col>
-              <ion-input placeholder="start" type="time" name="unavailability_startTime" ngModel></ion-input>
-            </ion-col>
-            <ion-col>
-              <ion-text>
-                to
-              </ion-text>
-            </ion-col>
-            <ion-col>
-              <ion-input placeholder="start" type="time" name="unavailability_endTime" ngModel></ion-input>
+            <ion-col class="">
+              <ion-input type="number" name="unavailabilityMinutes" placeholder=" minutes " min="0" ngModel required="true" [disabled]="disableInputs" ></ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -251,6 +244,51 @@
 
     </form>
 
+  </ng-container>
+
+  <!-- Caso a OT esteja fechada, os campos são exibidos em modo consulta -->
+  <ng-container *ngIf="segment === 'fill' && (work_order|async)?.status === 'Closed'">
+    <div class="ion-padding">
+
+      <!-- Maintenance Summary -->
+      <div>
+        <p> <strong>Maintenance Summary</strong> </p>
+      </div>
+      <ion-item lines="none" color="light">
+        <p>{{ (work_order|async)?.summary }}</p>
+      </ion-item>
+
+      <!-- Labor -->
+      <div>
+        <p> <strong>Labor</strong> </p>
+      </div>
+      <ion-list>
+        <ion-item *ngFor="let labor_entry of (work_order | async)?.labor | keyvalue" lines="none">
+          <ion-avatar slot="start">
+            <img src="" alt="">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{labor_entry.key}}</h2>
+            <h2>{{labor_entry.value}}</h2>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!-- Asset Unavailability -->
+      <div>
+        <p> <strong>Asset Unavailability</strong> </p>
+      </div>
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img src="assets/escada_rolante.jpg" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{(work_order|async)?.asset_desc}}</h2>
+          <h2>{{(work_order|async)?.asset_unavailability}}</h2>
+        </ion-label>
+      </ion-item>
+
+    </div>
   </ng-container>
 
 </ion-content>
