@@ -148,7 +148,7 @@
   <!-- Preenchimento da Ordem de trabalho -->
   <ng-container *ngIf="segment === 'fill' && (work_order|async)?.status === 'In progress'">
 
-    <form class="ion-padding" #f="ngForm" (ngSubmit)="closeWorkOrder(f)" novalidate>
+    <form class="ion-padding" #f="ngForm" (ngSubmit)="closeWorkOrder(f)">
       <!-- Relatório de intervenção - textbox -->
       <div>
         <p> <strong>Maintenance Summary</strong> </p>
@@ -265,7 +265,7 @@
       <ion-list>
         <ion-item *ngFor="let labor_entry of (work_order | async)?.labor | keyvalue" lines="none">
           <ion-avatar slot="start">
-            <img src="" alt="">
+            <img src="">
           </ion-avatar>
           <ion-label>
             <h2>{{labor_entry.key}}</h2>

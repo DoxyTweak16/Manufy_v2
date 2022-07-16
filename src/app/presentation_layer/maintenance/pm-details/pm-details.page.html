@@ -1,9 +1,47 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>pm-details</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/maintenance"></ion-back-button>
+    </ion-buttons>
+    <ion-title slot="end">Purchase Order details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen="True">
+    <!-- Título e 'status' -->
+    <div class="ion-padding">
+      <h1> <strong>{{ (preventive_maintenance | async)?.name }}</strong> </h1>
+      <p> <strong>Status</strong> </p>
+    </div>
+    
+    <!-- status flow image -->
+    <ng-container *ngIf="(preventive_maintenance | async)?.status === 'Not started'; else progress">
+      <ion-img src="../../../../assets/wo_waiting.png"></ion-img>
+    </ng-container>
+    <ng-template #progress>
+      <ng-container *ngIf="(preventive_maintenance|async)?.status === 'In progress'; else closed">
+        <ion-img src="../../../../assets/wo_progress.png"></ion-img>
+      </ng-container>
+    </ng-template>
+    <ng-template #closed>
+        <ng-container *ngIf="(preventive_maintenance|async)?.status === 'Closed'; else loading">
+          <ion-img src="../../../../assets/wo_closed.png"></ion-img>
+        </ng-container>
+    </ng-template>
+    <ng-template #loading><ion-spinner name="crescent" color="primary"></ion-spinner></ng-template>
 
+    
+    <ion-list>
+      <ion-item *ngFor="let step of (preventive_maintenance | async)?.procedure | keyvalue" lines="none">
+        <ion-label>
+          <h2>{{step.key}}</h2>
+          <h2>{{step.value}}</h2>
+          <ng-container *ngFor="let step_detail of step.value | keyvalue">
+            <h2>{{step_detail.key}}</h2>
+            <h2>{{step_detail.value}}</h2>
+          </ng-container>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  
 </ion-content>

@@ -1,23 +1,8 @@
 <ion-header>
   <ion-toolbar>
-
     <ion-title>
       <h1>Maintenance</h1>
     </ion-title>
-
-  </ion-toolbar>
-
-  <ion-toolbar>
-
-    <ion-segment (ionChange)="segmentChanged($event)" value="monthly">
-      <ion-segment-button value="monthly">
-        <ion-label>Monthly</ion-label>
-      </ion-segment-button>
-
-      <ion-segment-button value="daily">
-        <ion-label>Daily</ion-label>
-      </ion-segment-button>
-    </ion-segment>
 
   </ion-toolbar>
 
@@ -25,115 +10,92 @@
 
 <ion-content class="ion-padding-start ion-padding-end" fullscreen="True">
 
-  <ng-container *ngIf="selectedSegment === 'monthly'; then monthBlock; else dayBlock">
+  <div class="grid">
+    <div class="grid-item">
+      <ion-datetime size="cover" presentation="datetime" (ionChange)="selectDate($event)"></ion-datetime>
+    </div>
+  </div>
 
-  </ng-container>
+  <ion-segment (ionChange)="segmentChanged($event)" value="monthly">
+    <ion-segment-button value="monthly">
+      <ion-label>Monthly</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="daily">
+      <ion-label>Daily</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
   <!-- Vista mensal -->
-  <ng-template #monthBlock>
-
-    <div class="grid">
-      <div class="grid-item">
-        <ion-datetime size="cover" presentation="date"></ion-datetime>
-      </div>
-    </div>
+  <ng-container *ngIf="selectedSegment === 'monthly'; else dayBlock">
     
     <ion-list>
-      <ion-list-header>This Month's PM</ion-list-header>
+
+      <ng-container *ngIf="(monthlyPM | async)?.length; else empty">
+        <ion-item-divider ></ion-item-divider>
   
-      <ion-item-divider ></ion-item-divider>
-  
-      <ion-item class="ion-align-items-start">
-        <ion-label>
-          <h2><strong>Verificação gerador emergência</strong></h2> 
-          <div class="wo-status">
-            <p class="">Start date:</p>
-            <p class="">06/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <p class="">Due date: </p>
-            <p class="">20/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <ion-icon class="ion-padding-end" color="warning" name="lock-open" slot="start"></ion-icon> 
-            <ion-text color="warning">
-              <p>Waiting</p>
-            </ion-text>
-          </div>       
-        </ion-label>
-      </ion-item>
-  
-      <ion-item class="ion-align-items-start">
-        <ion-label>
-          <h2><strong>Manutenção quadros elétricos baixa tensão</strong></h2> 
-          <div class="wo-status">
-            <p class="">Start date:</p>
-            <p class="">06/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <p class="">Due date: </p>
-            <p class="">20/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <ion-icon class="ion-padding-end" color="secondary" name="sync" slot="start"></ion-icon> 
-            <ion-text color="secondary">
-              <p>In progress</p>
-            </ion-text>
-          </div>       
-        </ion-label>
-      </ion-item>
-  
-      <ion-item class="ion-align-items-start">
-        <ion-label>
-          <h2><strong>Iluminação pública</strong></h2> 
-          <div class="wo-status">
-            <p class="">Start date:</p>
-            <p class="">14/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <p class="">Due date: </p>
-            <p class="">26/06/2022</p>
-          </div>
-          <div class="wo-status">
-            <ion-icon class="ion-padding-end" color="medium" name="lock-closed" slot="start"></ion-icon> 
-            <ion-text color="medium">
-              <p>Closed</p>
-            </ion-text>
-          </div>  
-        </ion-label>
-      </ion-item>
-  
+        <ion-item class="ion-align-items-start" *ngFor="let pm of monthlyPM | async" [routerLink]="['/pm-details', pm.$key]">
+          <ion-label>
+            <h2><strong>{{pm.name}}</strong></h2> 
+            <div class="wo-status">
+              <p class="">Start date:</p>
+              <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
+            </div>
+            <div class="wo-status">
+              <p class="">Due date: </p>
+              <p class="">{{pm.due_date | date: 'dd/MM/yyyy h:mm'}}</p>
+            </div>
+            <div class="wo-status">
+              <ion-icon class="ion-padding-end" color="{{pm.status === 'Not started' ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}" 
+                        name="{{pm.status === 'Not started' ? 'lock-open' : (pm.status === 'In progress' ? 'sync' : 'lock-closed') }}" slot="start">
+              </ion-icon>
+              <ion-text color="{{ (pm.status === 'Not started') ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}">
+                <p>{{pm.status}}</p>   
+              </ion-text>
+            </div>       
+          </ion-label>
+        </ion-item>
+      </ng-container>
+      <ng-template #empty>
+        <h6>Empty.</h6>
+      </ng-template>
+        
     </ion-list>
-  </ng-template>
+  </ng-container>
 
   <!-- Vista diária -->
   <ng-template #dayBlock>
 
-    <h5>Day selector</h5>
-
     <ion-list>
+      
+      <ng-container *ngIf="(dailyPM | async)?.length; else empty">
 
-      <ion-item-divider ></ion-item-divider>
+        <ion-item-divider ></ion-item-divider>
+
+        <ion-item class="ion-align-items-start" *ngFor="let pm of dailyPM | async">
+          <ion-label>
+            <h2><strong>{{pm.name}}</strong></h2> 
+            <div class="wo-status">
+              <p class="">Start date:</p>
+              <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
+            </div>
+            <div class="wo-status">
+              <p class="">Due date: </p>
+              <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
+            </div>
+            <div class="wo-status">
+              <ion-icon class="ion-padding-end" color="warning" name="lock-open" slot="start"></ion-icon> 
+              <ion-text color="warning">
+                <p>{{pm.status}}</p>
+              </ion-text>
+            </div>       
+          </ion-label>
+        </ion-item>
+      </ng-container>
+      <ng-template #empty>
+        <h6>Empty.</h6>
+      </ng-template>
   
-      <ion-item class="ion-align-items-start">
-        <ion-label>
-          <h2><strong>Verificação gerador emergência</strong></h2> 
-          <div class="wo-status">
-            <p class="">Start date:</p>
-            <p class="">06/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <p class="">Due date: </p>
-            <p class="">20/04/2022</p>
-          </div>
-          <div class="wo-status">
-            <ion-icon class="ion-padding-end" color="warning" name="lock-open" slot="start"></ion-icon> 
-            <ion-text color="warning">
-              <p>Waiting</p>
-            </ion-text>
-          </div>       
-        </ion-label>
-      </ion-item>
 
     </ion-list>
 

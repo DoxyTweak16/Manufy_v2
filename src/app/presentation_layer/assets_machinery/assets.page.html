@@ -25,9 +25,14 @@
     <ion-item-divider></ion-item-divider>
 
     <ion-item *ngFor="let a of assets | async" [routerLink]="['/asset-details', a.$key]">
-      <ion-avatar slot="start">
-        <img [src]="a.img | async" />
-      </ion-avatar>
+
+      <ng-container *ngIf="a.img | async; else loading">
+        <ion-avatar slot="start">
+          <img [src]="a.img | async" />
+        </ion-avatar>
+      </ng-container>
+      <ng-template #loading><ion-spinner name="crescent" color="primary"></ion-spinner></ng-template>
+
       <ion-label>
         <h2><strong>{{a.name}}</strong></h2>
         <p>{{a.$key}}</p>

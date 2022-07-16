@@ -23,6 +23,11 @@ const routes: Routes = [
     ...canActivate( () => redirectUnauthorizedTo(['login']) )
   },
   {
+    path: 'pm-details/:id',
+    loadChildren: () => import('./presentation_layer/maintenance/pm-details/pm-details.module').then( m => m.PmDetailsPageModule),
+    ...canActivate( () => redirectUnauthorizedTo(['login']) )
+  },
+  {
     path: 'purchase-order/:id',
     loadChildren: () => import('./presentation_layer/purchases/po-details/po-details.module').then( m => m.PoDetailsPageModule ),
     ...canActivate( () => redirectUnauthorizedTo(['login']) )
