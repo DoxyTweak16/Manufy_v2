@@ -34,8 +34,6 @@
     <ion-list>
       <ion-item *ngFor="let step of (preventive_maintenance | async)?.procedure | keyvalue" lines="none">
         <ion-label>
-          <h2>{{step.key}}</h2>
-          <h2>{{step.value}}</h2>
           <ng-container *ngFor="let step_detail of step.value | keyvalue">
             <h2>{{step_detail.key}}</h2>
             <h2>{{step_detail.value}}</h2>
