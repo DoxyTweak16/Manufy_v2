@@ -12,7 +12,7 @@ export class WoRepoService {
   constructor(private afs: AngularFirestore) { }
 
   getAll(status ?: string, keywords ?:[string]) { 
-    return this.afs.collection('work_orders').snapshotChanges();
+    return this.afs.collection<WorkOrder>('work_orders');
   }
 
   getWO(id : string) {

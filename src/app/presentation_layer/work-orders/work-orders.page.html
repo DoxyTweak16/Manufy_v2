@@ -10,18 +10,18 @@
 
 <ion-content fullscreen="True">
 
-  <ion-searchbar showCancelButton="focus"></ion-searchbar>
-
   <ion-item-divider></ion-item-divider> 
 
-  <ion-list *ngFor="let wo of work_orders">
+  <ion-list *ngFor="let wo of work_orders | async ">
 
      <!-- <ion-item-divider></ion-item-divider> -->
 
     <ion-item class="ion-align-items-start" [routerLink]="['/wo-details', wo.$key]">
       <!-- <ion-badge color="warning">New</ion-badge> -->
       <ion-label>
-        <h2><strong>{{wo.title}}</strong></h2>
+        <ion-text class="ion-text-wrap">
+          <h2><strong>{{wo.title}}</strong></h2>
+        </ion-text>
         <div class="wo-status">
           <ion-icon class="ion-padding-end" color="{{wo.status === 'Waiting' ? 'warning' : (wo.status === 'In progress' ? 'secondary' : 'medium') }}" 
             name="{{wo.status === 'Waiting' ? 'lock-open' : (wo.status === 'In progress' ? 'sync' : 'lock-closed') }}" slot="start">
@@ -32,7 +32,7 @@
         </div>        
       </ion-label>
       <ion-label slot="end">
-        <p>{{wo.date}}</p>
+        <p>{{wo.date | date: 'dd/MM/yyyy h:mm'}}</p>
       </ion-label>
     </ion-item>
 

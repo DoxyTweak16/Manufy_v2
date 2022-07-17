@@ -15,6 +15,7 @@ import { Technician } from 'src/app/data_access_layer/technician';
 import { LaborService } from 'src/app/domain_layer/labor.service';
 import { FormArray, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { map, take } from 'rxjs/operators';
+import { AssetService } from 'src/app/domain_layer/asset.service';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class WoDetailsPage implements OnInit {
 
   public disableInputs = false; // Controla se o botão de adiconar labor está ativo (para OT's In Progress) ou desabilitado (OT's fechadas)
   
-  constructor(private woService : WorkOrderService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController) { }
+  constructor(private woService : WorkOrderService, private assetService : AssetService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController) { }
 
 
   ngOnInit() {
@@ -53,8 +54,16 @@ export class WoDetailsPage implements OnInit {
       map( a => {
         const $key = a.payload.id;
         const data = a.payload.data() as WorkOrder;
-        //Obter link das imagens de profile de cada técnico
+
+        data.date = data.date.toDate();
+
+        //Obter link da imagem do asset
+        let img_path = data.asset_img;
+        data.asset_img = this.assetService.getAssetImg(img_path);
+
         this.work_order_status = data.status;
+        
+        
         this.disableInputs = (data.status === "In progress") ? false : true ;
         return { $key, ...data };
       }))

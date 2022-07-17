@@ -29,9 +29,17 @@
         <ion-img src="assets/wo_closed.png"></ion-img>
       </ng-container>
   </ng-template>
-  <ng-template #loading><ion-spinner name="crescent" color="primary"></ion-spinner></ng-template>
-
-
+  <!--Loading-->
+  <ng-template #loading>
+    <ion-grid>
+      <ion-row class="ion-text-center">
+        <ion-col>
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+  
   <!-- Separadores do segmento -->
   <ion-segment class="ion-padding-top" (ionChange)="segmentChanged($event)" 
     [disabled]="(work_order|async)?.status === 'Waiting'" value="details">
@@ -55,7 +63,7 @@
         </ion-col>
         <ion-col>
           <ion-label>
-            <h2>Some date</h2>
+            <h2>{{(work_order|async)?.date | date: 'dd/MM/yyyy h:mm' }}</h2>
           </ion-label>
         </ion-col>
       </ion-row>
@@ -67,7 +75,7 @@
         </ion-col>
         <ion-col>
           <ion-label>
-            <h2> <a href="">{{(work_order|async)?.asset}} - {{(work_order|async)?.asset_desc}}</a> </h2>
+            <h2> <a href="">{{(work_order|async)?.asset}} - {{(work_order|async)?.asset_name}}</a> </h2>
           </ion-label>
         </ion-col>
       </ion-row>
@@ -155,7 +163,7 @@
       </div>
       <ion-item lines="none" color="light">
         <ion-textarea clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
-          spellcheck="true" required="true" name="maintenance_summary" ngModel>
+          spellcheck="true" required="true" pattern="text" name="maintenance_summary" ngModel>
         </ion-textarea>
       </ion-item>
 
@@ -163,8 +171,6 @@
       <div>
         <p> <strong>Labor</strong> </p>
       </div>
-
-      <!-- Introduzir mão de obra -->
       <ion-list>
         <ion-item *ngFor="let t of (labor_technicians | async)">
 
@@ -185,10 +191,10 @@
   
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
                 <ion-col class="">
-                  <ion-input type="number" name="{{t.username}}_hours" placeholder=" hours " min="0" ngModel required="true"></ion-input>
+                  <ion-input class="ion-text-center" type="number" name="{{t.username}}_hours" placeholder=" hours " min="0" max="12" ngModel required="true"></ion-input>
                 </ion-col>
                 <ion-col class="">
-                  <ion-input type="number" name="{{t.username}}_minutes" placeholder=" minutes " min="0" value="0" ngModel required="true"></ion-input>
+                  <ion-input class="ion-text-center" type="number" name="{{t.username}}_minutes" placeholder=" minutes " min="5" max="59" value="5" ngModel required="true"></ion-input>
                 </ion-col>
               </ion-row>
   
@@ -212,25 +218,31 @@
       <div>
         <p> <strong>Asset Unavailability</strong> </p>
       </div>
-
       <ion-item lines="none">
-        <ion-avatar slot="start">
-          <img src="assets/escada_rolante.jpg" />
-        </ion-avatar>
+
+        <!--Display asset image-->
+        <ng-container *ngIf="(work_order | async)?.asset_img; else loading">
+          <ion-avatar slot="start">
+            <img [src]="(work_order | async)?.asset_img | async" />
+          </ion-avatar>
+        </ng-container>
+        <ng-template #loading>
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </ng-template>
+
         <ion-label>
-          <h2>{{(work_order|async)?.asset_desc}}</h2>
+          <h2>{{(work_order|async)?.asset_name}}</h2>
         </ion-label>
       </ion-item>
-
       <!-- Introduzir indisponibilidade ativo-->
       <ion-item lines="none">
         <ion-grid>
           <ion-row class="ion-align-items-center ion-justify-content-evenly">
             <ion-col class="">
-              <ion-input type="number" name="unavailabilityHours" placeholder=" hours " min="0" ngModel required="true" [disabled]="disableInputs" ></ion-input>
+              <ion-input class="ion-text-center" type="number" name="unavailabilityHours" placeholder=" hours " min="0" max="99999" ngModel required="true" [disabled]="disableInputs" ></ion-input>
             </ion-col>
             <ion-col class="">
-              <ion-input type="number" name="unavailabilityMinutes" placeholder=" minutes " min="0" ngModel required="true" [disabled]="disableInputs" ></ion-input>
+              <ion-input class="ion-text-center" type="number" name="unavailabilityMinutes" placeholder=" minutes " min="1" max="99999" ngModel required="true" [disabled]="disableInputs" ></ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -254,8 +266,10 @@
       <div>
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
-      <ion-item lines="none" color="light">
-        <p>{{ (work_order|async)?.summary }}</p>
+      <ion-item lines="none" color="light" disabled="true">
+        <ion-text>
+          <p>{{ (work_order|async)?.summary }}</p>
+        </ion-text>
       </ion-item>
 
       <!-- Labor -->
@@ -280,10 +294,11 @@
       </div>
       <ion-item lines="none">
         <ion-avatar slot="start">
-          <img src="assets/escada_rolante.jpg" />
+          <!-- <img src="assets/escada_rolante.jpg" /> -->
+          <ion-img [src]=" (work_order | async)?.asset_img | async" alt="asset"></ion-img>
         </ion-avatar>
         <ion-label>
-          <h2>{{(work_order|async)?.asset_desc}}</h2>
+          <h2>{{(work_order|async)?.asset_name}}</h2>
           <h2>{{(work_order|async)?.asset_unavailability}}</h2>
         </ion-label>
       </ion-item>

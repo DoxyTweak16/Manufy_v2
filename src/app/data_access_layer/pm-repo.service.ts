@@ -32,4 +32,8 @@ export class PmRepoService {
     return this.afs.doc<PreventiveMaintenance>(`preventive_maintenance/${pm_id}`);
   }
 
+  updateMaintenance(pm_id, changes) {
+    this.afs.doc(`preventive_maintenance/${pm_id}`).update(changes);
+  }
+
 }

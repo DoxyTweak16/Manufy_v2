@@ -72,7 +72,7 @@
 
         <ion-item-divider ></ion-item-divider>
 
-        <ion-item class="ion-align-items-start" *ngFor="let pm of dailyPM | async">
+        <ion-item class="ion-align-items-start" *ngFor="let pm of dailyPM | async" [routerLink]="['/pm-details', pm.$key]">
           <ion-label>
             <h2><strong>{{pm.name}}</strong></h2> 
             <div class="wo-status">

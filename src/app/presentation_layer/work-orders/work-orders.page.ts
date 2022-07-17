@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { WorkOrderService } from 'src/app/domain_layer/work-order.service';
 import { WorkOrder } from 'src/app/data_access_layer/work-order';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AssetService } from 'src/app/domain_layer/asset.service';
 
 
 @Component({
@@ -11,34 +15,27 @@ import { WorkOrder } from 'src/app/data_access_layer/work-order';
 })
 export class WorkOrdersPage implements OnInit {
 
-  work_orders: Array<WorkOrder> = [];
-  subscription: any;
+  private workOrdersCollection: AngularFirestoreCollection<WorkOrder>;
+  public work_orders: Observable<WorkOrder[]>;
 
-  constructor(private woService : WorkOrderService) { }
+  constructor(private woService : WorkOrderService, private assetService : AssetService) { }
 
   ngOnInit() {
-    this.woService.get_all_work_orders().subscribe(data => {
-      this.work_orders = data.map(e => {
-        return {
-          $key: e.payload.doc.id,
-          asset: e.payload.doc.data()['asset'],
-          asset_desc: e.payload.doc.data()['asset_desc'],
-          asset_location: e.payload.doc.data()['asset_location'],
-          asset_unavailability: e.payload.doc.data()['asset_unavailability'],
-          date: new Date(e.payload.doc.data()['date'].toDate()).toLocaleString([], { year:'numeric', month:'2-digit', day:'2-digit', hour12: false, hour: '2-digit', minute: '2-digit' }),
-          description: e.payload.doc.data()['description'],
-          images: e.payload.doc.data()['images'],
-          labor: e.payload.doc.data()['labor'],
-          reporter_name: e.payload.doc.data()['reporter_name'],
-          reporter_phone: e.payload.doc.data()['reporter_phone'],
-          status: e.payload.doc.data()['status'],
-          summary: e.payload.doc.data()['summary'],
-          title: e.payload.doc.data()['title'],
-          owner: e.payload.doc.data()['owner'],
-          sector: e.payload.doc.data()['sector']
-        };
-      });
-    });
+    this.workOrdersCollection = this.woService.get_all_work_orders();
+    this.work_orders = this.workOrdersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as WorkOrder;
+
+        data.date = data.date.toDate();
+
+        //Obter link da imagem do asset
+        let img_path = data.asset_img;
+        data.asset_img = this.assetService.getAssetImg(img_path);
+
+        return { $key, ...data};
+      }))
+    );
   }
 
 }

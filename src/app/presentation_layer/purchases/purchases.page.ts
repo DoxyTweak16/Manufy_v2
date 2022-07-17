@@ -16,7 +16,7 @@ import { CreatePurchOrderPage } from './create-purch-order/create-purch-order.pa
 export class PurchasesPage implements OnInit {
 
   private purchaseOrdersCollection: AngularFirestoreCollection<PurchaseOrder>;
-  purchaseOrders : Observable<PurchaseOrder[]>;
+  public purchaseOrders : Observable<PurchaseOrder[]>;
 
   public managerProfile = true;    //TODO: Automatizar reconhecimento de utilizador com perfil de gestor ou não
   private userName = "afoliveira"; //TODO: Automatizar obtenção do username da sessão
@@ -27,8 +27,9 @@ export class PurchasesPage implements OnInit {
     this.purchaseOrdersCollection = this.poService.getAllPurchaseOrders();
     this.purchaseOrders = this.purchaseOrdersCollection.snapshotChanges().pipe(
       map(actions => actions.map(a => {
-        const $key   = a.payload.doc.id;
-        const data = a.payload.doc.data() as PurchaseOrder;        
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as PurchaseOrder; 
+        data.date  = data.date.toDate();       
         return { $key, ...data };
       }))
     );

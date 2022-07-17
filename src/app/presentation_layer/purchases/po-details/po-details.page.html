@@ -126,7 +126,7 @@
             <strong>
               <ion-text [color]="(purch_order | async)?.status === 'Approved' ? 'success' : 'danger' ">
                 {{(purch_order | async)?.status}}
-              </ion-text> by {{(purch_order | async)?.approver}} in N/A.
+              </ion-text> by {{(purch_order | async)?.approver}} @ N/A.
             </strong> 
           </h2>
         </ion-label>

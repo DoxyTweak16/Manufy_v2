@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 import { UserService } from 'src/app/domain_layer/user.service';
 
 @Component({
@@ -10,8 +11,9 @@ import { UserService } from 'src/app/domain_layer/user.service';
 })
 export class LoginPage implements OnInit {
 
-  public loginErrMsg = "";
+  private loading : any = null;
 
+  public loginErrMsg = "";
   public showSpinner = false;
 
   formLogin = this.fb.group({
@@ -21,7 +23,7 @@ export class LoginPage implements OnInit {
     password : ['',  [Validators.required, Validators.minLength(6)] ]
   });
 
-  constructor(private fb : FormBuilder , private userService : UserService, private router: Router) { 
+  constructor(private fb : FormBuilder , private userService : UserService, private router: Router, private loadingCtrl : LoadingController) { 
 
   }
 
@@ -36,19 +38,27 @@ export class LoginPage implements OnInit {
       console.log("Form status is invalid. Check if fields are correctly filled.")
     } 
     else {
-      this.showSpinner = true;
+      this.showLoading()
       this.userService.login(this.formLogin.value)
       .then( response => {
-        this.showSpinner = false;
+        this.loading.dismiss();
         this.router.navigate(['/']);
       })
       .catch( error => {
-        this.showSpinner = false;
+        this.loading.dismiss();
         console.log("Login error: ", error.message);
       });
 
     }
 
+  }
+
+  async showLoading() {
+    this.loading = await this.loadingCtrl.create({
+      message: "Signing in...",
+      spinner: 'crescent'
+    });
+    this.loading.present();
   }
 
   

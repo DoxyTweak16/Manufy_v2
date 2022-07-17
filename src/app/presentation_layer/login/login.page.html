@@ -22,11 +22,11 @@
     </div>
 
     <ion-item>
-      <ion-input placeholder="Email" formControlName="email" required></ion-input>
+      <ion-input position="floating" placeholder="Email" formControlName="email" required></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-input type="password" placeholder="Password" formControlName="password" required></ion-input>
+      <ion-input position="floating" type="password" placeholder="Password" formControlName="password" required></ion-input>
     </ion-item>
   
     <ion-item lines="none">
@@ -41,11 +41,6 @@
       </ion-text> </ion-button>
 
   </form>
-
-  <ng-container *ngIf="showSpinner">
-    <ion-spinner name="crescent"></ion-spinner>
-  </ng-container>
-  
 
 </ion-content>
 

@@ -31,7 +31,11 @@
           <img [src]="a.img | async" />
         </ion-avatar>
       </ng-container>
-      <ng-template #loading><ion-spinner name="crescent" color="primary"></ion-spinner></ng-template>
+      <ng-template #loading>
+        <div class="ion-padding-start">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+      </ng-template>
 
       <ion-label>
         <h2><strong>{{a.name}}</strong></h2>

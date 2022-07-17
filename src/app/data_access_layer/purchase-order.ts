@@ -8,7 +8,7 @@ export interface PurchaseOrder {
     wo_title : string,
     approver : string,
     cost_center : number,
-    date : Date,
+    date : any,
     status : string,
     num_items : number,
     products : Map< string, any >,
