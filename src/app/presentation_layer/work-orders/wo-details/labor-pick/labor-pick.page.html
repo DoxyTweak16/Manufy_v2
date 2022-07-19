@@ -12,7 +12,6 @@
   <ion-searchbar (ionInput)="handleInput($event)" showCancelButton="focus"></ion-searchbar>
 
   <form id="laborPickerForm" #laborForm="ngForm" (submit)="laborSelection(laborForm.value)">
-    <fieldset>
       <ion-list>
         <ion-item *ngFor="let t of technicians | async" lines="none">
           <!-- Exibir imagens dos técnicos. Se ainda não estiverem disponíveis, é exibido o spinner -->
@@ -37,7 +36,6 @@
           <!-- <input type="checkbox" ngModel name="{{t.username}}" value="selected"> -->
         </ion-item>
       </ion-list>
-    </fieldset>
   </form>
 
 </ion-content>
