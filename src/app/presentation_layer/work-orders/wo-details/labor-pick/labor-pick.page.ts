@@ -41,6 +41,7 @@ export class LaborPickPage implements OnInit {
   }
 
   laborSelection(data: NgForm) {
+    console.log("Labor selected.");
     for (const property in data) {
       if (data[property] === true) {
         console.log(this.technicians);
