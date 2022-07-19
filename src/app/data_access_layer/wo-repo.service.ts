@@ -11,8 +11,12 @@ export class WoRepoService {
 
   constructor(private afs: AngularFirestore) { }
 
-  getAll(status ?: string, keywords ?:[string]) { 
-    return this.afs.collection<WorkOrder>('work_orders');
+  getAll(queryString : string = '') { 
+    if (queryString != '') {
+      return this.afs.collection<WorkOrder>('work_orders', ref => ref.where('title', '>=', queryString).where('title', '<=', queryString+'\uF7FF'));
+    } else {
+      return this.afs.collection<WorkOrder>('work_orders', ref => ref.orderBy('date', 'desc'));
+    }
   }
 
   getWO(id : string) {

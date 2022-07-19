@@ -11,8 +11,6 @@ import { PreventiveMaintenanceService } from 'src/app/domain_layer/preventive-ma
 })
 export class MaintenancePage implements OnInit {
 
-  private today = new Date();
-
   public selectedSegment = "monthly"; 
 
   public selectedDay   = new Date().getDate();

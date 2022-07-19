@@ -10,6 +10,9 @@
 
 <ion-content fullscreen="True">
 
+  <ion-searchbar showCancelButton="focus" (ionInput)="handleInput($event)">
+  </ion-searchbar>
+
   <ion-item-divider></ion-item-divider> 
 
   <ion-list *ngFor="let wo of work_orders | async ">

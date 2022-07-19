@@ -3,12 +3,9 @@ import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { NgForm } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
-
+import { map } from 'rxjs/operators';
 import { Technician } from 'src/app/data_access_layer/technician';
 import { LaborService } from 'src/app/domain_layer/labor.service';
-
-import { Output, EventEmitter } from '@angular/core';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-labor-pick',
@@ -57,7 +54,6 @@ export class LaborPickPage implements OnInit {
 
   dismissModal() {
     this.modalController.dismiss(this.woLabor);
-
   }
 
   handleInput(ev) {

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { arrayUnion } from '@angular/fire/firestore';
 import { AssetRepoService } from '../data_access_layer/asset-repo.service';
 
 @Injectable({
@@ -8,8 +9,8 @@ export class AssetService {
 
   constructor(private asset_repo : AssetRepoService) { }
 
-  getAllAssets() {
-    return this.asset_repo.getAllAssets();
+  getAllAssets(queryString : string) {
+    return this.asset_repo.getAllAssets(queryString);
   }
 
   getAsset(id : string) {
@@ -19,6 +20,29 @@ export class AssetService {
   getAssetImg(full_img_path : string) {
     const img_path = full_img_path.substr(full_img_path.indexOf('asset')); 
     return this.asset_repo.getAssetImg(img_path);
+  }
+
+  updateAssetLocation(asset_id, location_data) {
+
+    //location_id
+    const location_id   = location_data.substr(0, location_data.indexOf('@@')); 
+    console.log("location_id: ", location_id);
+
+    //location_desc
+    const location_desc = location_data.split('@@')[1]; 
+    console.log("location_desc: ", location_desc);
+
+    //Adicionar entry ao array de alterações de localizações
+    const loc_history_entry = {date: new Date().toLocaleString().slice(0, -3).replace(',',''), location: location_id, technician: 'afoliveira'};
+
+    const newPartialAssetData = {location: location_id, location_desc: location_desc, location_history: arrayUnion(loc_history_entry)};
+
+    if(location_desc === 'Spare/Warehouse') {
+      newPartialAssetData["state"] = 'Spare/Warehouse';
+    }
+
+    return this.asset_repo.updateAsset(asset_id, newPartialAssetData);
+    
   }
 
 }

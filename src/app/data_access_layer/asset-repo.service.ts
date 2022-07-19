@@ -11,8 +11,17 @@ export class AssetRepoService {
 
   constructor(private afs : AngularFirestore, private storage : AngularFireStorage) { }
 
-  getAllAssets() {
-    return this.afs.collection<Asset>('asset');
+  getAllAssets(queryString : string = '') {
+    //The \uF7FF value used here is the last Unicode character that exists, so this:
+    //Orders all documents by their name value
+    //Finds the first document that starts with 'mi'
+    //returns all documents, until it reaches one that's bigger than 'mi'
+    //Retirado de: https://stackoverflow.com/questions/59334306/checking-if-any-documents-in-firestore-contain-a-substrin
+    if (queryString != '') {
+      return this.afs.collection<Asset>('asset', ref => ref.where('name', '>=', queryString).where('name', '<=', queryString+'\uF7FF') );
+    } else {
+      return this.afs.collection<Asset>('asset');
+    }
   }
 
   getAsset(id : string) {
@@ -24,5 +33,8 @@ export class AssetRepoService {
     return ref.getDownloadURL() as Observable<string | null>;
   }
 
-
+  updateAsset(asset_id, changes) {
+    return this.afs.doc(`asset/${asset_id}`).update(changes);
+  }
+  
 }

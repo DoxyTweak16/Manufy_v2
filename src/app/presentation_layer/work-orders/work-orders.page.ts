@@ -38,4 +38,24 @@ export class WorkOrdersPage implements OnInit {
     );
   }
 
+  handleInput(event : any) {
+    const query = event.target.value;
+
+    this.workOrdersCollection = this.woService.get_all_work_orders(query);
+    this.work_orders = this.workOrdersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as WorkOrder;
+
+        data.date = data.date.toDate();
+
+        //Obter link da imagem do asset
+        let img_path = data.asset_img;
+        data.asset_img = this.assetService.getAssetImg(img_path);
+
+        return { $key, ...data};
+      }))
+    );
+  }
+
 }

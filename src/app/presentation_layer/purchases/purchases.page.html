@@ -10,7 +10,7 @@
 
 <ion-content fullscreen="True">
 
-  <ion-searchbar showCancelButton="focus"></ion-searchbar>
+  <ion-searchbar showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
 
   <ion-list >
     <ion-item-divider></ion-item-divider>

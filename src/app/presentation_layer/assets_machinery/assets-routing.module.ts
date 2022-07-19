@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'asset-details',
     loadChildren: () => import('./asset-details/asset-details.module').then( m => m.AssetDetailsPageModule)
+  },
+  {
+    path: 'location-picker',
+    loadChildren: () => import('./location-picker/location-picker/location-picker.module').then( m => m.LocationPickerPageModule)
   }
 ];
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { UserService } from 'src/app/domain_layer/user.service';
 
 @Component({
@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
     password : ['',  [Validators.required, Validators.minLength(6)] ]
   });
 
-  constructor(private fb : FormBuilder , private userService : UserService, private router: Router, private loadingCtrl : LoadingController) { 
+  constructor(private fb : FormBuilder , private userService : UserService, private router: Router, private loadingCtrl : LoadingController, public toastController : ToastController) { 
 
   }
 
@@ -46,6 +46,7 @@ export class LoginPage implements OnInit {
       })
       .catch( error => {
         this.loading.dismiss();
+        this.loginToast(error.message);
         console.log("Login error: ", error.message);
       });
 
@@ -59,6 +60,15 @@ export class LoginPage implements OnInit {
       spinner: 'crescent'
     });
     this.loading.present();
+  }
+
+  async loginToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 3000,
+      color: "danger"
+    });
+    toast.present();
   }
 
   

@@ -12,8 +12,13 @@ export class PoRepoService {
 
   constructor(private afs : AngularFirestore, private storage : AngularFireStorage) { }
 
-  getAllPurchaseOrders() {
-    return this.afs.collection<PurchaseOrder>('purchase_orders');
+  getAllPurchaseOrders(queryString : string = '') {
+    if (queryString != '') {
+      return this.afs.collection<PurchaseOrder>('purchase_orders', ref => ref.where('name', '>=', queryString).where('name', '<=', queryString+'\uF7FF'));
+    } else {
+      return this.afs.collection<PurchaseOrder>('purchase_orders', ref => ref.orderBy('date', 'desc'));
+    }
+   
 
   }
 

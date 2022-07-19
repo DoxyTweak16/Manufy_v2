@@ -48,6 +48,22 @@ export class PurchasesPage implements OnInit {
     this.presentToast(newStatus);
   }
 
+  handleInput(event : any) {
+    const query = event.target.value;
+    console.log(query);
+
+    this.purchaseOrdersCollection = this.poService.getAllPurchaseOrders(query);
+    this.purchaseOrders = this.purchaseOrdersCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as PurchaseOrder; 
+        data.date  = data.date.toDate();       
+        return { $key, ...data };
+      }))
+    );
+
+  }
+
   async presentToast(newStatus : string) {
     const msg = "Purchase order " + newStatus.toLowerCase() + "."
     const toast = await this.toastController.create({

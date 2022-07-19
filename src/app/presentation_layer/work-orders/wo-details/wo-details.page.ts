@@ -152,7 +152,7 @@ export class WoDetailsPage implements OnInit {
           text: 'Yes',
           handler: () => {
             console.log("Confirm work order status change");
-            this.segment = "fill";
+            this.segment = "details";
             this.woService.woToClosed(this.wo_id, data.value, this.woLabor);
           }
         }],

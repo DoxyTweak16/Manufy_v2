@@ -9,9 +9,9 @@ export class WorkOrderService {
 
   constructor(private wo_repo : WoRepoService) { }
 
-  get_all_work_orders(status ?: string, keywords ?:[string]) {
+  get_all_work_orders(queryString : string = '') {
     //VERIFICAR SE status E keywords NÃO SÃO NULOS OU UNDEFINED
-    return this.wo_repo.getAll();
+    return this.wo_repo.getAll(queryString);
   }
 
   get_work_order(id : string) {

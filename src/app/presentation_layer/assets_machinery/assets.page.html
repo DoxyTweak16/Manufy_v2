@@ -10,7 +10,7 @@
 
 <ion-content>
 
-  <ion-searchbar showCancelButton="focus"></ion-searchbar>
+  <ion-searchbar showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
 
   <ion-item class="ion-margin-vertical" lines="none" button (click)="scanDeviceTag()" >
     <ion-icon size="large" src="assets/qr-code-scan.svg" class="ion-margin-end" color="primary"></ion-icon>
@@ -41,6 +41,7 @@
         <h2><strong>{{a.name}}</strong></h2>
         <p>{{a.$key}}</p>
         <p>{{a.sector_desc}}</p>
+        <p>{{a.state}}</p>
       </ion-label>
     </ion-item>
 

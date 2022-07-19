@@ -75,7 +75,7 @@
         </ion-col>
         <ion-col>
           <ion-label>
-            <h2> <a href="">{{(work_order|async)?.asset}} - {{(work_order|async)?.asset_name}}</a> </h2>
+            <h2> <a href="">{{(work_order|async)?.asset}} - {{(work_order|async)?.asset_desc}}</a> </h2>
           </ion-label>
         </ion-col>
       </ion-row>
@@ -231,7 +231,7 @@
         </ng-template>
 
         <ion-label>
-          <h2>{{(work_order|async)?.asset_name}}</h2>
+          <h2>{{(work_order|async)?.asset_desc}}</h2>
         </ion-label>
       </ion-item>
       <!-- Introduzir indisponibilidade ativo-->
@@ -298,7 +298,7 @@
           <ion-img [src]=" (work_order | async)?.asset_img | async" alt="asset"></ion-img>
         </ion-avatar>
         <ion-label>
-          <h2>{{(work_order|async)?.asset_name}}</h2>
+          <h2>{{(work_order|async)?.asset_desc}}</h2>
           <h2>{{(work_order|async)?.asset_unavailability}}</h2>
         </ion-label>
       </ion-item>

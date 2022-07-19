@@ -1,0 +1,58 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Location</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-searchbar showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
+
+  <form #laborForm="ngForm" (submit)="submitSelection()" novalidate>
+    <ng-container *ngIf="locations | async; else loading">
+      <ion-list>
+        <ion-radio-group name="selectedLocation" [(ngModel)]="selectedLocation">
+          <ion-item *ngFor="let l of locations | async" lines="none">
+            <ion-label>
+              <ion-text class="ion-text-wrap">
+                <h6><strong>{{l.$key}}</strong></h6>
+                <h6>{{l.name}}</h6>
+              </ion-text>
+            </ion-label>
+            <!-- <ion-checkbox type="radio" color="primary" [ngModel]="false" name="{{l.name}}"></ion-checkbox> -->
+            <ion-radio type="radio" slot="end" name="location" value="{{l.$key}}@@{{l.name}}"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
+    </ng-container>
+    
+    
+    <ion-item *ngIf="formInvalid" lines="none">
+      <ion-label>
+        <ion-text color="danger">
+          <h6>Please select a location or return to asset page.</h6>
+        </ion-text>
+      </ion-label>
+   </ion-item>
+    
+    <ion-button type="submit" class="ion-padding execute_btn" color="primary" expand="block">
+      Assign
+    </ion-button>
+
+  </form>
+
+  <!--Loading-->
+  <ng-template #loading>
+    <ion-grid>
+      <ion-row class="ion-text-center">
+        <ion-col>
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-template>
+
+</ion-content>

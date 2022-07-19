@@ -9,8 +9,8 @@ export class PurchaseService {
 
   constructor(private po_repo : PoRepoService) { }
 
-  getAllPurchaseOrders() {
-    return this.po_repo.getAllPurchaseOrders();
+  getAllPurchaseOrders(queryString : string = '') {
+    return this.po_repo.getAllPurchaseOrders(queryString);
   }
 
   getPurchaseOrder(id : string) {

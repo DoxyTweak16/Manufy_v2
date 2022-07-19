@@ -1,7 +1,7 @@
 export interface WorkOrder {
     $key: any;
     asset: string;
-    asset_name: string;
+    asset_desc: string;
     asset_location: string;
     asset_unavailability: number;
     asset_img: any;
