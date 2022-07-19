@@ -29,7 +29,10 @@ export class PurchasesPage implements OnInit {
       map(actions => actions.map(a => {
         const $key = a.payload.doc.id;
         const data = a.payload.doc.data() as PurchaseOrder; 
-        data.date  = data.date.toDate();       
+
+        data.date  = data.date.toDate();     
+        data.decision_date = data.decision_date.toDate();  
+        
         return { $key, ...data };
       }))
     );

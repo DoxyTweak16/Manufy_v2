@@ -26,7 +26,7 @@ export class WoRepoService {
  }
 
  updateWorkOrderStatus(id: string, changes: Partial<WorkOrder>) {
-  this.afs.doc(`work_orders/${id}`).update(changes);
+  return this.afs.doc(`work_orders/${id}`).update(changes);
 }
 
 }

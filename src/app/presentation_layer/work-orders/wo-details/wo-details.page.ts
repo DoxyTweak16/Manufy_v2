@@ -8,7 +8,7 @@ import { WorkOrderService } from 'src/app/domain_layer/work-order.service';
 import { WorkOrder } from 'src/app/data_access_layer/work-order';
 import { Observable } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { LaborPickPage } from './labor-pick/labor-pick.page';
 
 import { Technician } from 'src/app/data_access_layer/technician';
@@ -34,14 +34,14 @@ export class WoDetailsPage implements OnInit {
   public wo_id : string;
   public work_order : Observable<WorkOrder>;
   public work_order_status : string;
-
+  public maintenance_summary : string = ''; //Valor do relatório de intervenção.
   public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
-
   public woLabor : Array<string> = []; //Onde são guardados os nomes do técnicos escolhidos para registo de mão-de-obra.
-
+  //public unavailabilityHours   = '0'; //Valor pré-definido das horas de indisponibilidade do ativo.
+  //public unavailabilityMinutes = '0'; //Valor pré-definido das horas de indisponibilidade do ativo.
   public disableInputs = false; // Controla se o botão de adiconar labor está ativo (para OT's In Progress) ou desabilitado (OT's fechadas)
   
-  constructor(private woService : WorkOrderService, private assetService : AssetService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController) { }
+  constructor(private woService : WorkOrderService, private assetService : AssetService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController, private toastController : ToastController) { }
 
 
   ngOnInit() {
@@ -68,11 +68,6 @@ export class WoDetailsPage implements OnInit {
         return { $key, ...data };
       }))
   
-  }
-
-  segmentChanged(ev) {
-    this.segment = ev.detail.value;
-    console.log(this.segment)
   }
 
   deleteLaborEntry(technician : string) {
@@ -109,8 +104,8 @@ export class WoDetailsPage implements OnInit {
     const modal = await this.modalController.create({
       component: LaborPickPage
     });
-    modal.onDidDismiss().then((returnedLabor) => {
 
+    modal.onDidDismiss().then((returnedLabor) => {
       if (returnedLabor.data.length > 0) {
         //console.log("Returned labor not null.")
         for (const idx in returnedLabor.data) {
@@ -152,8 +147,15 @@ export class WoDetailsPage implements OnInit {
           text: 'Yes',
           handler: () => {
             console.log("Confirm work order status change");
-            this.segment = "details";
-            this.woService.woToClosed(this.wo_id, data.value, this.woLabor);
+            this.segment = "fill";
+            this.woService.woToClosed(this.wo_id, data.value, this.woLabor)
+              .then( () => {
+
+              })
+              .catch( (err) => {
+                console.log("Uh oh... something went wrong: ", err)
+                this.woToast(err, "danger");
+              });
           }
         }],
     });
@@ -182,6 +184,22 @@ export class WoDetailsPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async woToast(msg: string, color = "secondary") {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 5000,
+      color: color,
+      buttons: [ {
+          text: 'Done',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }]
+    });
+    toast.present();
   }
 
 }

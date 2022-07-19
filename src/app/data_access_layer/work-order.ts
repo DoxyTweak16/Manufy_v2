@@ -1,9 +1,9 @@
 export interface WorkOrder {
     $key: any;
     asset: string;
-    asset_desc: string;
+    asset_name: string;
     asset_location: string;
-    asset_unavailability: number;
+    asset_unavailability: string;
     asset_img: any;
     date: any;
     description: string;

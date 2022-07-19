@@ -37,9 +37,7 @@ export class AssetService {
 
     const newPartialAssetData = {location: location_id, location_desc: location_desc, location_history: arrayUnion(loc_history_entry)};
 
-    if(location_desc === 'Spare/Warehouse') {
-      newPartialAssetData["state"] = 'Spare/Warehouse';
-    }
+    newPartialAssetData["state"] = (location_desc === 'Spare/Warehouse') ? 'Spare/Warehouse' : 'Operational';
 
     return this.asset_repo.updateAsset(asset_id, newPartialAssetData);
     

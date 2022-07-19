@@ -82,20 +82,30 @@
 
   <!-- Items (linhas de produtos) da Purchase order-->
   <ion-list>
+
     <ion-item-divider></ion-item-divider>
-    <ion-item *ngFor="let product of (purch_order | async)?.products | keyvalue">
-      <ion-avatar slot="start">
-        <ion-img [src]=" product.value.img | async" alt="item"></ion-img>
-      </ion-avatar>
-      <ion-label>
-        <h3>{{ product.key }}</h3>
-        <ion-text color="primary">
-          <h6> <strong>{{product.value.price}} €</strong> </h6>
-        </ion-text>
-        <h6><strong>Qty: </strong>{{product.value.qty}}</h6>
-      </ion-label>
-    </ion-item>
+    
+      <ion-item *ngFor="let product of (purch_order | async)?.products | keyvalue">
+        <ng-container *ngIf="(product.value.img | async); else loading">
+          <ion-avatar slot="start">
+            <ion-img [src]=" product.value.img | async"></ion-img>
+          </ion-avatar>
+          <ion-label>
+            <h3>{{ product.key }}</h3>
+            <ion-text color="primary">
+              <h6> <strong>{{product.value.price}} €</strong> </h6>
+            </ion-text>
+            <h6><strong>Qty: </strong>{{product.value.qty}}</h6>
+          </ion-label>
+        </ng-container>
+      </ion-item>
+        
   </ion-list>
+
+  <!--Loading-->
+  <ng-template #loading>
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </ng-template>
 
 </ion-content>
 
@@ -126,7 +136,7 @@
             <strong>
               <ion-text [color]="(purch_order | async)?.status === 'Approved' ? 'success' : 'danger' ">
                 {{(purch_order | async)?.status}}
-              </ion-text> by {{(purch_order | async)?.approver}} @ N/A.
+              </ion-text> by {{(purch_order | async)?.approver}} @ {{ (purch_order | async)?.decision_date | date: 'dd/MM/yyyy h:mm' }}.
             </strong> 
           </h2>
         </ion-label>

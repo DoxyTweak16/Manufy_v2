@@ -19,12 +19,14 @@ export class PurchaseService {
 
   approvePO(id : string, approver_username : string) {
     const newStatus = "Approved";
-    this.po_repo.updatePoStatus(id, {status: newStatus, approver: approver_username});
+    const decision_date = new Date();
+    this.po_repo.updatePoStatus(id, {status: newStatus, approver: approver_username, decision_date: decision_date});
   }
 
   rejectPO(id: string, approver_username : string) {
     const newStatus = "Rejected";
-    this.po_repo.updatePoStatus(id, {status: newStatus, approver: approver_username});
+    const decision_date = new Date();
+    this.po_repo.updatePoStatus(id, {status: newStatus, approver: approver_username, decision_date: decision_date});
   }
 
   getProductImg(full_img_path : string) {

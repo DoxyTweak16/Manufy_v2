@@ -30,15 +30,11 @@ export class PoDetailsPage implements OnInit {
     this.po_id = this.activatedRoute.snapshot.paramMap.get('id'); 
     console.log("Purchase Order ID: ", this.po_id);
 
-    //(ISTO FUNCIONA) Obter do Firestore o documento onde constam os dados desta Work Order
-    //this.poDoc       = this.poService.getPurchaseOrder(this.po_id)
-    //this.purch_order = this.poDoc.valueChanges();
-    //this.imgUrl = this.poService.getProductImg("gs://manufy-b1352.appspot.com/product/diferencial-2-polos-25a-30ma.jpg");
-    //console.log(this.imgUrl);
-
     this.purch_order = this.poService.getPurchaseOrder(this.po_id).snapshotChanges().pipe(
       map(actions => {
         const data = actions.payload.data() as PurchaseOrder;
+
+        data.decision_date = data.decision_date.toDate();  
 
         //Vamos obter os links para exibir as imagens dos produtos
         for (let p_key in data.products) {

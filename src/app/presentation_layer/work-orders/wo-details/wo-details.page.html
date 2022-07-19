@@ -9,6 +9,8 @@
 
 <ion-content fullscreen="True" >
 
+  <!-- <p>{{segment}}</p> -->
+
   <!-- Título e 'status' -->
   <div class="ion-padding">
     <h1> <strong>{{(work_order|async)?.title}}</strong> </h1>
@@ -41,7 +43,7 @@
   </ng-template>
   
   <!-- Separadores do segmento -->
-  <ion-segment class="ion-padding-top" (ionChange)="segmentChanged($event)" 
+  <ion-segment [(ngModel)]="segment" class="ion-padding-top" 
     [disabled]="(work_order|async)?.status === 'Waiting'" value="details">
     <ion-segment-button value="details">
       <ion-label>Details</ion-label>
@@ -75,7 +77,9 @@
         </ion-col>
         <ion-col>
           <ion-label>
-            <h2> <a href="">{{(work_order|async)?.asset}} - {{(work_order|async)?.asset_desc}}</a> </h2>
+            <ion-text class="ion-text-wrap">
+              <h2> <a [routerLink]="['/asset-details', (work_order|async)?.asset]" >{{(work_order|async)?.asset}} - {{(work_order|async)?.asset_name}}</a> </h2>
+            </ion-text>
           </ion-label>
         </ion-col>
       </ion-row>
@@ -163,7 +167,7 @@
       </div>
       <ion-item lines="none" color="light">
         <ion-textarea clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
-          spellcheck="true" required="true" pattern="text" name="maintenance_summary" ngModel>
+          spellcheck="true" required="true" pattern="text" name="maintenance_summary" [(ngModel)]="maintenance_summary">
         </ion-textarea>
       </ion-item>
 
@@ -231,7 +235,8 @@
         </ng-template>
 
         <ion-label>
-          <h2>{{(work_order|async)?.asset_desc}}</h2>
+          <h2>{{(work_order|async)?.asset}}</h2>
+          <h2>{{(work_order|async)?.asset_name}}</h2>
         </ion-label>
       </ion-item>
       <!-- Introduzir indisponibilidade ativo-->
@@ -239,10 +244,10 @@
         <ion-grid>
           <ion-row class="ion-align-items-center ion-justify-content-evenly">
             <ion-col class="">
-              <ion-input class="ion-text-center" type="number" name="unavailabilityHours" placeholder=" hours " min="0" max="99999" ngModel required="true" [disabled]="disableInputs" ></ion-input>
+              <ion-input class="ion-text-center" ngModel type="number" name="unavailabilityHours" placeholder=" hours " min="0" max="99999"[disabled]="disableInputs" ></ion-input>
             </ion-col>
             <ion-col class="">
-              <ion-input class="ion-text-center" type="number" name="unavailabilityMinutes" placeholder=" minutes " min="1" max="99999" ngModel required="true" [disabled]="disableInputs" ></ion-input>
+              <ion-input class="ion-text-center" ngModel type="number" name="unavailabilityMinutes" placeholder=" minutes " min="1" max="59" [disabled]="disableInputs" ></ion-input>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -266,10 +271,9 @@
       <div>
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
-      <ion-item lines="none" color="light" disabled="true">
-        <ion-text>
-          <p>{{ (work_order|async)?.summary }}</p>
-        </ion-text>
+      <ion-item lines="none" color="light">
+        <ion-textarea rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (work_order|async)?.summary }}">
+        </ion-textarea>
       </ion-item>
 
       <!-- Labor -->
@@ -298,8 +302,14 @@
           <ion-img [src]=" (work_order | async)?.asset_img | async" alt="asset"></ion-img>
         </ion-avatar>
         <ion-label>
-          <h2>{{(work_order|async)?.asset_desc}}</h2>
-          <h2>{{(work_order|async)?.asset_unavailability}}</h2>
+          <h2>{{(work_order|async)?.asset}}</h2>
+          <h2>{{(work_order|async)?.asset_name}}</h2>
+          <ng-container *ngIf="(work_order|async)?.asset_unavailability === 'N/A'; else showAssetUnavailability">
+            <h2>Unavailability not recorded</h2>
+          </ng-container>
+          <ng-template #showAssetUnavailability>
+            <h2>{{(work_order|async)?.asset_unavailability}}</h2>
+          </ng-template>
         </ion-label>
       </ion-item>
 

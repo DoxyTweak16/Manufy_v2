@@ -86,10 +86,9 @@
       </ng-container>
       <!-- Senão, se estiver como "Closed", mostra o texto como um elemento estático, de modo a não ser alterado -->
       <ng-template #summaryPMClosed>
-        <ion-item lines="none" color="light" class="ion-padding-start ion-padding-end" disabled="true">
-          <ion-text>
-            <p>{{ (preventive_maintenance|async)?.summary }}</p>
-          </ion-text>
+        <ion-item lines="none" color="light">
+          <ion-textarea rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (preventive_maintenance|async)?.summary }}">
+          </ion-textarea>
         </ion-item>
       </ng-template>
 
