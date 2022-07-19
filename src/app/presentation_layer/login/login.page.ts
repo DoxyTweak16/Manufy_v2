@@ -15,8 +15,10 @@ export class LoginPage implements OnInit {
 
   public loginErrMsg = "";
   public showSpinner = false;
+  public showPwd = false;
+  public pwdIcon = "eye";
 
-  formLogin = this.fb.group({
+  public formLogin = this.fb.group({
     email : ['',  {
       validators: [Validators.required, Validators.email]
     }],
@@ -29,6 +31,11 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  togglePwd() {
+    this.showPwd = !this.showPwd;
+    this.pwdIcon = this.showPwd ? "eye-off" : "eye";
   }
 
   async onSubmit() {

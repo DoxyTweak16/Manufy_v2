@@ -2,3 +2,14 @@ ion-img::part(image) {
     width: 50%; /* or whatever value */
     /* you can set the height value too */
 }
+
+ion-content {
+    /** success **/
+  --ion-color-success:  #366ED8;
+  --ion-color-success-rgb: 54, 110, 216;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #36abe0;
+  --ion-color-success-tint: #50c8ff;
+}
+  

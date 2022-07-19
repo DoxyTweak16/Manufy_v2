@@ -30,7 +30,10 @@
           </ng-template>
 
           <ion-label>
-            <h2>{{t.username}}</h2>
+            <ion-text>
+              <h2> <strong>{{t.name}}</strong> </h2>
+            </ion-text>
+            <h3>{{t.username}}</h3>
             <h3>{{t.category}}</h3>
           </ion-label>
           <ion-checkbox color="primary" [ngModel]="false" name="{{t.username}}"></ion-checkbox>

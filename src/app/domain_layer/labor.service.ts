@@ -8,8 +8,8 @@ export class LaborService {
 
   constructor(private labor_repo : LaborRepoService) { }
 
-  getAllTechnicians() {
-    return this.labor_repo.getAllTechnicians();
+  getAllTechnicians(queryString : string = '') {
+    return this.labor_repo.getAllTechnicians(queryString);
   }
 
   getTechnicians(names : string[]) {
@@ -19,6 +19,10 @@ export class LaborService {
   getTechnicianByID(id : string) {
    return this.labor_repo.getTechnicianByID(id);
   }
+
+  getTechnicianByUsername(username : string) {
+    return this.labor_repo.getTechnicianByUsername(username);
+   }
 
   getProfileImg(full_profile_img_path : string) {
     const img_path = full_profile_img_path.substr(full_profile_img_path.indexOf('technician'));

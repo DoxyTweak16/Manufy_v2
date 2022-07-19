@@ -6,7 +6,7 @@ import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 
 import { WorkOrderService } from 'src/app/domain_layer/work-order.service';
 import { WorkOrder } from 'src/app/data_access_layer/work-order';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { ModalController, ToastController } from '@ionic/angular';
 import { LaborPickPage } from './labor-pick/labor-pick.page';
@@ -38,7 +38,9 @@ export class WoDetailsPage implements OnInit {
   public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
   public woLabor : Array<string> = []; //Onde são guardados os nomes do técnicos escolhidos para registo de mão-de-obra.
   public disableInputs = false; // Controla se o botão de adiconar labor está ativo (para OT's In Progress) ou desabilitado (OT's fechadas)
-  public finalLaborPictures : any; //Aqui são guardadas as fotos do técnicos selecionados. Apenas exibido depois da OT estar Closed.
+
+  public profilePictures : Array<any> = []; //Array onde são guardas as profile pictures de técnicos cujos registos mão-de-obrsa já estejam guardados em db.
+  public savedLabor = {};
   
   constructor(private woService : WorkOrderService, private assetService : AssetService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController, private toastController : ToastController) { }
 
@@ -62,11 +64,10 @@ export class WoDetailsPage implements OnInit {
 
         this.work_order_status = data.status;
         
-        
         this.disableInputs = (data.status === "In progress") ? false : true ;
         return { $key, ...data };
       }))
-  
+
   }
 
   deleteLaborEntry(technician : string) {
@@ -116,6 +117,9 @@ export class WoDetailsPage implements OnInit {
         
         //Depois de obter os nomes dos técnicos que participaram na Ordem de Trabalho, devo buscar os seus registos à DB para exibir
         this.techniciansCollection = this.labor_service.getTechnicians(this.woLabor);
+
+        // Limpar array de modo a ser atualizado
+
         this.labor_technicians = this.techniciansCollection.snapshotChanges().pipe(
           map(actions => actions.map( a => {
             const $key = a.payload.doc.id;
@@ -148,9 +152,7 @@ export class WoDetailsPage implements OnInit {
             console.log("Confirm work order status change");
             this.segment = "fill";
             this.woService.woToClosed(this.wo_id, data.value, this.woLabor)
-              .then( () => {
-                //this.labor_service.getProfileImg
-              })
+              .then( () => {})
               .catch( (err) => {
                 console.log("Uh oh... something went wrong: ", err)
                 this.woToast(err, "danger");

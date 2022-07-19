@@ -17,8 +17,8 @@ export class LaborPickPage implements OnInit {
 
 
   private techniciansCollection: AngularFirestoreCollection<Technician>;
-  technicians : Observable<Technician[]>;
 
+  public technicians : Observable<Technician[]>;
   public woLabor = [];
 
   constructor(private labor_service : LaborService, public modalController : ModalController) { }
@@ -57,8 +57,22 @@ export class LaborPickPage implements OnInit {
     this.modalController.dismiss(this.woLabor);
   }
 
-  handleInput(ev) {
-    console.log("123");
+  handleInput(event) {
+    const query = event.target.value;
+
+    this.techniciansCollection = this.labor_service.getAllTechnicians(query);
+    this.technicians = this.techniciansCollection.snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as Technician;
+
+        //Obter link da imagem de perfil de cada técnico
+        let profile_img_path = data.img;
+        data.img = this.labor_service.getProfileImg(profile_img_path);
+
+        return { $key, ...data};
+      }))
+    );
   }
 
 

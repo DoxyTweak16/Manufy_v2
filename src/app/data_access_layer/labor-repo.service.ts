@@ -11,8 +11,12 @@ export class LaborRepoService {
 
   constructor(private firestore: AngularFirestore, private storage : AngularFireStorage) { }
 
-  getAllTechnicians() {
-    return this.firestore.collection<Technician>("technician");
+  getAllTechnicians(queryString : string = '') {
+    if (queryString != '') {
+      return this.firestore.collection<Technician>('technician', ref => ref.where('name', '>=', queryString).where('name', '<=', queryString+'\uF7FF'));
+    } else {
+      return this.firestore.collection<Technician>('technician');
+    }
   }
 
   getTechnicians(names : string[]) {
@@ -21,6 +25,10 @@ export class LaborRepoService {
 
   getTechnicianByID(id : string) {
    
+  }
+
+  getTechnicianByUsername(username : string) {
+    return this.firestore.collection<Technician>("technician", ref => ref.where("username", "==", username) );
   }
 
   getProfileImg(img_path : string) {

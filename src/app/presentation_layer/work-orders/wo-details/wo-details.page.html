@@ -189,7 +189,7 @@
 
               <ion-row class="ion-align-items-center ion-justify-content-evenly">
                 <ion-col class="ion-no-padding ion-no-margin">
-                  <h6>{{t.name}} {{t.surname}}</h6>
+                  <h6>{{t.name}}</h6>
                 </ion-col>
               </ion-row>
   
@@ -281,7 +281,7 @@
         <p> <strong>Labor</strong> </p>
       </div>
       <ion-list>
-        <ion-item *ngFor="let labor_entry of (work_order | async)?.labor | keyvalue" lines="none">
+        <ion-item *ngFor="let labor_entry of (work_order | async)?.labor | keyvalue ; let i = index" lines="none">
           <ion-avatar slot="start">
             <img src="">
           </ion-avatar>

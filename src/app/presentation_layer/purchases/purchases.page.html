@@ -31,7 +31,7 @@
         </ion-label>
       </ion-item>
 
-      <ng-container *ngIf="managerProfile && po.status === 'Awaiting Approval' ">
+      <ng-container *ngIf="po.status === 'Awaiting Approval' ">
         <ion-item-options side="start">
           <ion-item-option color="success" (click)="approve_po(po.$key)">Approve</ion-item-option>
         </ion-item-options>

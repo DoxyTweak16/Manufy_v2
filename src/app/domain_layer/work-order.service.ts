@@ -79,7 +79,6 @@ export class WorkOrderService {
   }
 
   get_all_work_orders(queryString : string = '') {
-    //VERIFICAR SE status E keywords NÃO SÃO NULOS OU UNDEFINED
     return this.wo_repo.getAll(queryString);
   }
 

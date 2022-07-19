@@ -16,6 +16,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 
 import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 
 
@@ -30,6 +31,7 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
     AngularFireModule.initializeApp(environment.firebase),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    AngularFirestoreModule.enablePersistence()
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
