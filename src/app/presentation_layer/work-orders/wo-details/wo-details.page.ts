@@ -13,7 +13,7 @@ import { LaborPickPage } from './labor-pick/labor-pick.page';
 
 import { Technician } from 'src/app/data_access_layer/technician';
 import { LaborService } from 'src/app/domain_layer/labor.service';
-import { FormArray, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { map, take } from 'rxjs/operators';
 import { AssetService } from 'src/app/domain_layer/asset.service';
 
@@ -37,9 +37,8 @@ export class WoDetailsPage implements OnInit {
   public maintenance_summary : string = ''; //Valor do relatório de intervenção.
   public labor_technicians : Observable<Technician[]>; //Onde são guardados todos os técnicos existentes
   public woLabor : Array<string> = []; //Onde são guardados os nomes do técnicos escolhidos para registo de mão-de-obra.
-  //public unavailabilityHours   = '0'; //Valor pré-definido das horas de indisponibilidade do ativo.
-  //public unavailabilityMinutes = '0'; //Valor pré-definido das horas de indisponibilidade do ativo.
   public disableInputs = false; // Controla se o botão de adiconar labor está ativo (para OT's In Progress) ou desabilitado (OT's fechadas)
+  public finalLaborPictures : any; //Aqui são guardadas as fotos do técnicos selecionados. Apenas exibido depois da OT estar Closed.
   
   constructor(private woService : WorkOrderService, private assetService : AssetService, private labor_service : LaborService, private activatedRoute : ActivatedRoute, private modalController : ModalController, private toastController : ToastController) { }
 
@@ -150,7 +149,7 @@ export class WoDetailsPage implements OnInit {
             this.segment = "fill";
             this.woService.woToClosed(this.wo_id, data.value, this.woLabor)
               .then( () => {
-
+                //this.labor_service.getProfileImg
               })
               .catch( (err) => {
                 console.log("Uh oh... something went wrong: ", err)
@@ -177,7 +176,7 @@ export class WoDetailsPage implements OnInit {
         {
           text: 'Yes',
           handler: () => {
-            this.woService.woToInProgress(this.wo_id, 'afoliveira');
+            this.woService.woToInProgress(this.wo_id);
             this.segment = "fill";
           }
         }],

@@ -11,7 +11,7 @@ import { UserService } from 'src/app/domain_layer/user.service';
 })
 export class LoginPage implements OnInit {
 
-  private loading : any = null;
+  private loading : any;
 
   public loginErrMsg = "";
   public showSpinner = false;
@@ -31,14 +31,14 @@ export class LoginPage implements OnInit {
 
   }
 
-  onSubmit() {
+  async onSubmit() {
 
     if (this.formLogin.invalid) {
       this.loginErrMsg = "Invalid credentials."
       console.log("Form status is invalid. Check if fields are correctly filled.")
     } 
     else {
-      this.showLoading()
+      await this.showLoading()
       this.userService.login(this.formLogin.value)
       .then( response => {
         this.loading.dismiss();

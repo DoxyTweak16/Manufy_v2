@@ -16,10 +16,8 @@ import { CreatePurchOrderPage } from './create-purch-order/create-purch-order.pa
 export class PurchasesPage implements OnInit {
 
   private purchaseOrdersCollection: AngularFirestoreCollection<PurchaseOrder>;
-  public purchaseOrders : Observable<PurchaseOrder[]>;
 
-  public managerProfile = true;    //TODO: Automatizar reconhecimento de utilizador com perfil de gestor ou não
-  private userName = "afoliveira"; //TODO: Automatizar obtenção do username da sessão
+  public purchaseOrders : Observable<PurchaseOrder[]>;
 
   constructor(private poService : PurchaseService, public toastController : ToastController, private modalController : ModalController ) { }
 
@@ -41,13 +39,13 @@ export class PurchasesPage implements OnInit {
   approve_po(item) {
     const newStatus = "Approved";
     console.log("Approve WO: ", item);
-    this.poService.approvePO(item, this.userName);
+    this.poService.approvePO(item);
   }
 
   reject_po(item) {
     const newStatus = "Rejected";
     console.log("Reject WO: ", item);
-    this.poService.rejectPO(item, this.userName);
+    this.poService.rejectPO(item);
     this.presentToast(newStatus);
   }
 
@@ -81,9 +79,6 @@ export class PurchasesPage implements OnInit {
     const modal = await this.modalController.create({
       component: CreatePurchOrderPage
     });
-
-    //TODO: Não esquecer eventual método para receber dados após dismiss
-
     return await modal.present();
 
   }

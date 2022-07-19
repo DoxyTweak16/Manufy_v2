@@ -69,9 +69,17 @@ export class AssetDetailsPage implements OnInit {
       component: LocationPickerPage
     });
 
-    modal.onDidDismiss().then( (location) => {
+    modal.onDidDismiss().then( async (location) => {
       console.log("Returned location: ", location.data);
       const location_data = location.data;
+
+      if (location.data === 'N/A') {
+        return await modal.present().then( () => {
+          this.loading.dismiss();
+          }
+        );
+      }
+
       this.assetService.updateAssetLocation(this.asset_id, location_data)
         .then( () => {
           this.assetToast("Asset location updated with success.");

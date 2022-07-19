@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Asset } from 'src/app/data_access_layer/asset';
@@ -16,7 +16,7 @@ import { AssetService } from 'src/app/domain_layer/asset.service';
 export class AssetsPage implements OnInit {
 
   private assetsCollection : AngularFirestoreCollection<Asset>; //reference to Firestore Collection
-  private loading : any = null;
+  private loading : any;
   private asset_scan_options = {
     resultDisplayDuration: 0,
     prompt: "Place device tag inside scan area."
@@ -24,7 +24,7 @@ export class AssetsPage implements OnInit {
 
   public assets : Observable<Asset[]>;
 
-  constructor(private assetService : AssetService, private barcodeScanner : BarcodeScanner, private router : Router, private alertController: AlertController, private loadingCtrl: LoadingController) { }
+  constructor(private assetService : AssetService, private barcodeScanner : BarcodeScanner, private router : Router, private toastController: ToastController, private loadingCtrl: LoadingController) { }
 
   ngOnInit() {
     this.assetsCollection = this.assetService.getAllAssets('')
@@ -42,8 +42,8 @@ export class AssetsPage implements OnInit {
     );
   }
 
-  scanDeviceTag() {
-    this.loadingScanResults();
+  async scanDeviceTag() {
+    await this.loadingScanResults();
     this.barcodeScanner.scan(this.asset_scan_options)
       .then( barcodeData => {
         const device_tag_content = barcodeData.text;
@@ -53,13 +53,14 @@ export class AssetsPage implements OnInit {
           if (snap.data()) {
             this.router.navigate(['/asset-details', device_tag_content]);
           } else {
-            this.scanAlert("Device not found.");
+            this.assetToast("Device not found.", "warning");
           }
         });
       })
       .catch( err => {
         console.log("Error: ", err);
-        this.scanAlert(err);
+        this.loading.dismiss();
+        this.assetToast(err, "danger");
       });
   }
 
@@ -88,13 +89,13 @@ export class AssetsPage implements OnInit {
     this.loading.present();
   }
 
-  async scanAlert(msg: string) {
-    const alert  = await this.alertController.create({
-      header: 'Scan Alert',
+  async assetToast(msg: string, color = "secondary") {
+    const toast = await this.toastController.create({
       message: msg,
-      buttons: ['OK'],
+      duration: 3000,
+      color: color
     });
-    alert .present();
+    toast.present();
   }
 
 }

@@ -84,13 +84,13 @@ export class PoDetailsPage implements OnInit {
   approve_po() {
     const newStatus = "Approved";
     console.log("Approve WO: ", this.po_id);
-    this.poService.approvePO(this.po_id, 'afoliveira');
+    this.poService.approvePO(this.po_id);
   }
 
   reject_po() {
     const newStatus = "Approved";
     console.log("Approve WO: ", this.po_id);
-    this.poService.rejectPO(this.po_id, 'afoliveira');
+    this.poService.rejectPO(this.po_id);
   }
 
 }

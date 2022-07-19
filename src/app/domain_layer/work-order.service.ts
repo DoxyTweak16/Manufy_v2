@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { WoRepoService } from '../data_access_layer/wo-repo.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WorkOrderService {
 
-  constructor(private wo_repo : WoRepoService) { }
+  constructor(private wo_repo : WoRepoService, private userService : UserService) { }
 
   private asset_unavailability_check(hours : any, minutes : any) {
 
@@ -78,7 +79,8 @@ export class WorkOrderService {
     return this.wo_repo.getWO(id);
   }
 
-  woToInProgress(id : string, technician_username : string) {
+  woToInProgress(id : string) {
+    let technician_username = this.userService.getCurrentUser();
     const newStatus = "In progress";
     this.wo_repo.updateWorkOrderStatus(id, {status: newStatus, owner: technician_username});
   }

@@ -32,7 +32,8 @@ export class LocationPickerPage implements OnInit {
   }
 
   submitSelection() {
-    if (this.selectedLocation === undefined) {
+    if (this.selectedLocation === undefined || this.selectedLocation === '') {
+      console.log(this.selectedLocation);
       this.formInvalid = true;
     } else {
       this.dismissModal();
@@ -52,7 +53,11 @@ export class LocationPickerPage implements OnInit {
 
 
   dismissModal() {
-    this.modalController.dismiss(this.selectedLocation);
+    if(this.selectedLocation === undefined || this.selectedLocation === '') {
+      this.modalController.dismiss("N/A");
+    } else {
+      this.modalController.dismiss(this.selectedLocation);
+    }
   }
 
 }

@@ -322,7 +322,7 @@
 <ng-container *ngIf="(work_order|async)?.status === 'Waiting'">
   <ion-footer class="ion-no-border">
     <ion-toolbar>
-      <ion-button color="primary ion-margin-vertical" type="submit" expand="block" (click)="startWorkOrder()">
+      <ion-button color="primary" class="ion-padding-horizontal ion-margin-vertical" type="submit" expand="block" (click)="startWorkOrder()">
         Execute Work Order
       </ion-button>
     </ion-toolbar>
