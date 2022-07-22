@@ -19,7 +19,7 @@ export class WoRepoService {
     }
   }
 
-  getWO(id : string) {
+  getWO() {
     // return this.firestore.collection('work_orders').doc(id).get();
     // const work_order_doc = await this.firestore.collection('work_orders').doc(id).get(); // Devolve observable
     return this.afs.collection('work_orders');

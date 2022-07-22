@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./presentation_layer/login/login.module').then( m => m.LoginPageModule),
   },
   {
+    path: 'contact-sys',
+    loadChildren: () => import('./presentation_layer/contact-sys/contact-sys/contact-sys.module').then( m => m.ContactSysPageModule)
+  },
+  {
     path: 'tabs',
     loadChildren: () => import('./presentation_layer/tabs/tabs.module').then( m => m.TabsPageModule),
     ...canActivate( () => redirectUnauthorizedTo(['login']) )
@@ -51,7 +55,7 @@ const routes: Routes = [
     path: 'create-purch-order',
     loadChildren: () => import('./presentation_layer/purchases/create-purch-order/create-purch-order.module').then( m => m.CreatePurchOrderPageModule),
     ...canActivate( () => redirectUnauthorizedTo(['login']) )
-  }
+  },
 ];
 
 @NgModule({

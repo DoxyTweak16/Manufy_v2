@@ -69,33 +69,41 @@ export class AssetDetailsPage implements OnInit {
       component: LocationPickerPage
     });
 
-    modal.onDidDismiss().then( async (location) => {
-      console.log("Returned location: ", location.data);
-      const location_data = location.data;
+    modal.onDidDismiss()
+      .then( async (location) => {
+        console.log("Returned location: ", location.data);
+        const location_data = location.data;
 
-      if (location.data === 'N/A') {
-        return await modal.present().then( () => {
-          this.loading.dismiss();
-          }
-        );
-      }
+        if (location.data === 'N/A') {
+          return await modal.present().then( () => {
+            this.loading.dismiss();
+            }
+          );
+        }
 
-      this.assetService.updateAssetLocation(this.asset_id, location_data)
-        .then( () => {
-          this.assetToast("Asset location updated with success.");
-        })
-        .catch( err => {
-          console.log("Uh oh... Something went wrong: ", err);
-          const err_msg = "Uh oh... Something went wrong. Please try again later.";
-          this.showAlert(err_msg);
-        })
-      }
-    );
+        this.assetService.updateAssetLocation(this.asset_id, location_data)
+          .then( () => {
+            this.assetToast("Asset location updated with success.");
+          })
+          .catch( err => {
+            console.log("Uh oh... Something went wrong: ", err);
+            const err_msg = "Uh oh... Something went wrong. Please try again later.";
+            this.showAlert(err_msg);
+          })
+        }
+      )
+      .catch( (err) => {
+        this.assetToast(err, "danger");
+      });
 
-    return await modal.present().then( () => {
-      this.loading.dismiss();
-      }
-    );
+    return await modal.present()
+      .then( () => {
+        this.loading.dismiss();
+        }
+      )
+      .catch( (err) => {
+        this.assetToast(err, "danger");
+      });
   }
 
   async showLoading() {

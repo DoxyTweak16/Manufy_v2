@@ -254,7 +254,7 @@
       </ion-item>
 
       <ng-container *ngIf="segment === 'fill' && (work_order|async)?.status === 'In progress'">
-        <ion-button color="primary ion-margin-vertical" type="submit" expand="block">
+        <ion-button color="primary" class="ion-padding-horizontal ion-margin-vertical" type="submit" expand="block">
           CLOSE WORK ORDER
         </ion-button>
       </ng-container>
@@ -266,7 +266,7 @@
   <!-- Caso a OT esteja fechada, os campos são exibidos em modo consulta -->
   <ng-container *ngIf="segment === 'fill' && (work_order|async)?.status === 'Closed'">
     <div class="ion-padding">
-
+ 
       <!-- Maintenance Summary -->
       <div>
         <p> <strong>Maintenance Summary</strong> </p>
@@ -282,9 +282,16 @@
       </div>
       <ion-list>
         <ion-item *ngFor="let labor_entry of (work_order | async)?.labor | keyvalue ; let i = index" lines="none">
-          <ion-avatar slot="start">
-            <img src="">
-          </ion-avatar>
+
+          <ng-container *ngFor="let entry of (laborPictures | async)?.labor">
+            <ng-container *ngFor="let e of entry | keyvalue">
+              <ng-container *ngIf="e.key === labor_entry.key">
+                <ion-avatar slot="start">
+                  <ion-img [src]="e.value | async"></ion-img>
+                </ion-avatar>
+              </ng-container>
+            </ng-container>
+          </ng-container>
           <ion-label>
             <h2>{{labor_entry.key}}</h2>
             <h2>{{labor_entry.value}}</h2>

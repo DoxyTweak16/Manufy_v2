@@ -17,32 +17,31 @@
 
   <!-- status flow image -->
   <ng-container *ngIf="(preventive_maintenance | async)?.status === 'Not started'; else progress">
-    <ion-img src="../../../../assets/wo_waiting.png"></ion-img>
+    <ion-img src="../../../../assets/pm_not_started.png"></ion-img>
   </ng-container>
   <ng-template #progress>
     <ng-container *ngIf="(preventive_maintenance|async)?.status === 'In progress'; else closed">
-      <ion-img src="../../../../assets/wo_progress.png"></ion-img>
+      <ion-img src="../../../../assets/pm_progress.png"></ion-img>
     </ng-container>
   </ng-template>
   <ng-template #closed>
     <ng-container *ngIf="(preventive_maintenance|async)?.status === 'Closed'; else spinner">
-      <ion-img src="../../../../assets/wo_closed.png"></ion-img>
+      <ion-img src="../../../../assets/pm_closed.png"></ion-img>
     </ng-container>
   </ng-template>
 
 
   <!-- Assets Info -->
-  <ion-grid class="ion-padding-start ion-padding-top">
+  <ion-grid class="ion-padding-horizontal ion-padding-top">
     <ion-row>
       <ion-col size="3" class="ion-no-padding">
         <p> <strong>Assets</strong> </p>
       </ion-col>
-      <ion-col class="ion-no-padding">
+      <ion-col class="ion-padding-horizontal">
         <ion-text class="ion-text-wrap">
           <ng-container *ngFor="let asset_entry of (preventive_maintenance|async)?.assets">
             <ng-container *ngFor="let a of asset_entry | keyvalue">
-              <p> <a [routerLink]="['/asset-details/', a.key]">{{a.key}} - {{a.value}}</a> </p>
-
+                <p> <a [routerLink]="['/asset-details/', a.key]">{{a.key}} - {{a.value}}</a> </p>
             </ng-container>
           </ng-container>
         </ion-text>
@@ -54,7 +53,7 @@
   <form #f="ngForm" (ngSubmit)="closePM(f)">
 
     <!-- Procedure -->
-    <div class="ion-padding-start">
+    <div class="ion-padding-horizontal">
       <p> <strong>Procedure</strong> </p>
     </div>
     <ion-list *ngIf="preventive_maintenance | async; else spinner">
@@ -70,62 +69,52 @@
       </ion-item>
     </ion-list>
 
-    <!-- Como exibir restantes conteúdos se estiver Closed ou In progress-->
-    <ng-container *ngIf="(preventive_maintenance | async)?.status != 'Not started'">
-      <!-- Relatório de intervenção -->
-      <div class="ion-padding-start" [hidden]=pmFormDisabled>
+    <!-- Resto dos conteúdos a exibir caso a OT esteja como In Progress -->
+    <ng-container *ngIf="(preventive_maintenance | async)?.status === 'In progress'">
+      <div class="ion-padding-horizontal">
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
-      <!-- Se estiver como "In progress", mostra o texto como um campo de input -->
-      <ng-container *ngIf="(preventive_maintenance | async)?.status === 'In progress'; else summaryPMClosed">
-      <ion-item lines="none" color="light" class="ion-padding-start ion-padding-end">
+      <ion-item lines="none" class="ion-padding-horizontal" color="light">
         <ion-textarea clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
-          spellcheck="true" required="true" pattern="text" name="maintenance_summary" ngModel [hidden]=pmFormDisabled value="{{(preventive_maintenance | async)?.summary}}">
+          spellcheck="true" required="true" pattern="text" name="maintenance_summary" [(ngModel)]="maintenance_summary">
         </ion-textarea>
       </ion-item>
-      </ng-container>
-      <!-- Senão, se estiver como "Closed", mostra o texto como um elemento estático, de modo a não ser alterado -->
-      <ng-template #summaryPMClosed>
-        <ion-item lines="none" color="light">
-          <ion-textarea rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (preventive_maintenance|async)?.summary }}">
-          </ion-textarea>
-        </ion-item>
-      </ng-template>
 
-      <!-- Mão de obra -->
-      <div class="ion-padding-start ion-padding-top" [hidden]=pmFormDisabled>
+      <div class="ion-padding-horizontal">
         <p> <strong>Labor</strong> </p>
       </div>
-      <ion-list [hidden]=pmFormDisabled>
+      <ion-list class="ion-padding-horizontal">
         <ion-item *ngFor="let t of (labor_technicians | async)">
           <ng-container *ngIf="t.img | async; else loading">
             <ion-avatar slot="start">
               <img [src]="t.img | async" />
             </ion-avatar>
           </ng-container>
-          <ng-template #loading>
-            <ion-spinner name="crescent" color="parimary"></ion-spinner>
-          </ng-template>
-          <ion-grid>
-            <ion-row class="ion-align-items-center ion-justify-content-evenly">
-              <ion-col class="ion-no-padding ion-no-margin">
-                <h6>{{t.name}}</h6>
-              </ion-col>
-            </ion-row>
-            <ion-row class="ion-align-items-center ion-justify-content-evenly">
-              <ion-col class="">
-                <ion-input class="ion-text-center" type="number" name="{{t.username}}_hours" placeholder=" hours " min="0" ngModel
-                  required="true"></ion-input>
-              </ion-col>
-              <ion-col class="">
-                <ion-input class="ion-text-center" type="number" name="{{t.username}}_minutes" placeholder=" minutes " min="0" value="0" ngModel
-                  required="true"></ion-input>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
+          <ng-template #loading><ion-spinner name="crescent" color="parimary"></ion-spinner></ng-template>
+
+            <ion-grid>
+
+              <ion-row class="ion-align-items-center ion-justify-content-evenly">
+                <ion-col class="ion-no-padding ion-no-margin">
+                  <h6>{{t.name}}</h6>
+                </ion-col>
+              </ion-row>
+  
+              <ion-row class="ion-align-items-center ion-justify-content-evenly">
+                <ion-col class="">
+                  <ion-input class="ion-text-center" type="number" name="{{t.username}}_hours" placeholder=" hours " min="0" max="12" ngModel required="true"></ion-input>
+                </ion-col>
+                <ion-col class="">
+                  <ion-input class="ion-text-center" type="number" name="{{t.username}}_minutes" placeholder=" minutes " min="5" max="59" value="5" ngModel required="true"></ion-input>
+                </ion-col>
+              </ion-row>
+  
+            </ion-grid>
+  
           <ion-button fill="clear" (click)="deleteLaborEntry(t.username)">
             <ion-icon name="trash" color="dark"></ion-icon>
           </ion-button>
+          
         </ion-item>
 
         <ion-item lines="none">
@@ -135,53 +124,69 @@
         </ion-item>
 
       </ion-list>
+    </ng-container>
 
-      <!-- Mão-de-obra - Modo consulta, caso PM esteja como 'Closed'-->
-      <ng-container *ngIf="(preventive_maintenance | async)?.status === 'Closed'">
-        <!-- Labor -->
-        <div class="ion-padding-start ion-padding-top">
-          <p> <strong>Labor</strong> </p>
-        </div>
-        <ion-list class="ion-padding-start ion-padding-top">
-          <ion-item *ngFor="let labor_entry of (preventive_maintenance | async)?.labor | keyvalue" lines="none">
-            <ion-avatar slot="start">
-              <img src="">
-            </ion-avatar>
-            <ion-label>
-              <h2>{{labor_entry.key}}</h2>
-              <h2>{{labor_entry.value}}</h2>
-            </ion-label>
-          </ion-item>
-        </ion-list>
-      </ng-container>
-
-      <!-- Botão para fechar o PM -->
-      <ng-container *ngIf="(preventive_maintenance | async)?.status === 'In progress'">
-        <ion-button color="primary ion-margin-vertical" type="submit" expand="block">
-          <ion-text>
-            Close Maintenance
-          </ion-text>
-        </ion-button>
-      </ng-container>
-
+    <!-- EM IN PROGRESS: Botão para fechar o PM -->
+    <ng-container *ngIf="(preventive_maintenance | async)?.status === 'In progress'">
+      <ion-button color="primary" class="ion-padding-horizontal ion-margin-vertical" type="submit" expand="block">
+        <ion-text>
+          Close Maintenance
+        </ion-text>
+      </ion-button>
     </ng-container>
 
   </form>
 
   <!-- Botão p/ avançar estado da PM para "In progress" -->
   <ng-container *ngIf="(preventive_maintenance | async)?.status === 'Not started'">
-    <ion-button color="primary ion-margin-vertical" type="submit" expand="block" (click)="startPM()">
+    <ion-button color="primary" class="ion-padding-horizontal ion-margin-vertical" type="submit" expand="block" (click)="startPM()">
       <ion-text>
         Start Maintenance
       </ion-text>
     </ion-button>
   </ng-container>
 
+  <!-- Como exibir restantes conteúdos se estiver Closed -->
+  <ng-container *ngIf="(preventive_maintenance | async)?.status === 'Closed'">
+    <!-- Relatório de intervenção -->
+    <div class="ion-padding-start">
+      <p> <strong>Maintenance Summary</strong> </p>
+    </div>
+    <!-- Se estiver como "In progress", mostra o texto como um campo de input -->
+    <ion-item lines="none" color="light" class="ion-padding-horizontal">
+      <ion-textarea rows=4 disabled="true" name="maintenance_summary" value="{{(preventive_maintenance | async)?.summary}}">
+      </ion-textarea>
+    </ion-item>
+
+    <!-- Mão de obra -->
+    <div class="ion-padding-start ion-padding-top">
+      <p> <strong>Labor</strong> </p>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let labor_entry of (preventive_maintenance | async)?.labor | keyvalue ; let i = index" lines="none">
+        <ng-container *ngFor="let entry of (laborPictures | async)?.labor">
+          <ng-container *ngFor="let e of entry | keyvalue">
+            <ng-container *ngIf="e.key === labor_entry.key">
+              <ion-avatar slot="start">
+                <ion-img [src]="e.value | async"></ion-img>
+              </ion-avatar>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        <ion-label>
+          <h2>{{labor_entry.key}}</h2>
+          <h2>{{labor_entry.value}}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+  </ng-container>
+
   <!--Loading-->
   <ng-template #spinner>
-    <ion-grid>
+    <ion-grid class="ion-text-center">
       <ion-row class="ion-text-center">
-        <ion-col>
+        <ion-col class="ion-text-center">
           <ion-spinner name="crescent" color="primary"></ion-spinner>
         </ion-col>
       </ion-row>

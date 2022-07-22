@@ -32,6 +32,7 @@ export class LocationPickerPage implements OnInit {
   }
 
   submitSelection() {
+    console.log("selectedLocation: ", this.selectedLocation);
     if (this.selectedLocation === undefined || this.selectedLocation === '') {
       console.log(this.selectedLocation);
       this.formInvalid = true;

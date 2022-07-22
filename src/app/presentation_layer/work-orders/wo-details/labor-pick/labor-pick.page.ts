@@ -21,6 +21,8 @@ export class LaborPickPage implements OnInit {
   public technicians : Observable<Technician[]>;
   public woLabor = [];
 
+  public techniciansPictures : {[id: string] : string} = {};
+
   constructor(private labor_service : LaborService, public modalController : ModalController) { }
 
   ngOnInit() {
@@ -31,8 +33,11 @@ export class LaborPickPage implements OnInit {
         const data = a.payload.doc.data() as Technician;
 
         //Obter link da imagem de perfil de cada técnico
-        let profile_img_path = data.img;
+        const profile_img_path = data.img;
         data.img = this.labor_service.getProfileImg(profile_img_path);
+
+        const username = data.username;
+        this.techniciansPictures[username] = profile_img_path; //Neste array é guardada a correspondência: username -> profilePicPath 
 
         return { $key, ...data };
 
@@ -41,12 +46,15 @@ export class LaborPickPage implements OnInit {
   }
 
   laborSelection(data: NgForm) {
-    console.log("Labor selected.");
-    for (const property in data) {
+    for (let property in data) {
       if (data[property] === true) {
-        console.log(this.technicians);
-        console.log(`${property} selected as WO labor.`);
-        this.woLabor.push(property);
+        //console.log(`${property} selected as WO labor.`);
+        //this.woLabor.push(property);
+
+        const obj = {};
+        obj[property] = this.techniciansPictures[property]
+        this.woLabor.push( obj ); 
+
       }
     }
 

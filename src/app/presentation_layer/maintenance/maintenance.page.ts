@@ -22,31 +22,9 @@ export class MaintenancePage implements OnInit {
 
   constructor(private pmService : PreventiveMaintenanceService ) { }
 
-  ngOnInit() {
-    this.monthlyPM = this.pmService.getMaintenanceByMonth(this.selectedMonth, this.selectedYear).snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const $key = a.payload.doc.id;
-        const data = a.payload.doc.data() as PreventiveMaintenance;
-
-        data.start_date = data.start_date.toDate();
-        data.due_date   = data.due_date.toDate();
-
-        return { $key, ...data };
-      }))
-    );
-
-    this.dailyPM = this.pmService.getMaintenanceListByDay(this.selectedDay, this.selectedMonth, this.selectedYear).snapshotChanges().pipe(
-      map(actions => actions.map(a => {
-        const $key = a.payload.doc.id;
-        const data = a.payload.doc.data() as PreventiveMaintenance;
-
-        data.start_date = data.start_date.toDate();
-        data.due_date   = data.due_date.toDate();
-
-        return { $key, ...data };
-      }))
-    );
-
+  ngOnInit() {  
+    this.getMaintenanceListByMonth();
+    this.getMaintenanceByDay();
   }
 
   segmentChanged(ev: any) {
@@ -61,14 +39,38 @@ export class MaintenancePage implements OnInit {
     this.selectedDay   =  selectedDate.getDate();
     this.selectedMonth =  selectedDate.getMonth()+1;
     this.selectedYear  =  selectedDate.getFullYear();
-  }
-
-  getMaintenanceListByDate(selectedDate : Date) {
     
+    this.getMaintenanceListByMonth();
+    this.getMaintenanceByDay();
+
   }
 
-  getTodaysMaintenanceList() {
+  getMaintenanceListByMonth() {
+    this.monthlyPM = this.pmService.getMaintenanceByMonth(this.selectedMonth, this.selectedYear).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as PreventiveMaintenance;
 
+        data.start_date = data.start_date.toDate();
+        data.due_date   = data.due_date.toDate();
+
+        return { $key, ...data };
+      }))
+    );
+  }
+
+  getMaintenanceByDay() {
+    this.dailyPM = this.pmService.getMaintenanceListByDay(this.selectedDay, this.selectedMonth, this.selectedYear).snapshotChanges().pipe(
+      map(actions => actions.map(a => {
+        const $key = a.payload.doc.id;
+        const data = a.payload.doc.data() as PreventiveMaintenance;
+
+        data.start_date = data.start_date.toDate();
+        data.due_date   = data.due_date.toDate();
+
+        return { $key, ...data };
+      }))
+    );
   }
 
 }

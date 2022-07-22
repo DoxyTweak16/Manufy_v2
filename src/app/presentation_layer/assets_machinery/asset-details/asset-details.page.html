@@ -61,7 +61,7 @@
 
   <!-- Imagem do ativo -->
   <ng-container *ngIf="(asset | async)?.img | async; else loading">
-    <div class="ion-align-center" >
+    <div class="ion-align-center ion-no-padding" >
       <ion-img [src]="(asset | async)?.img | async"></ion-img>
     </div>
   </ng-container>
