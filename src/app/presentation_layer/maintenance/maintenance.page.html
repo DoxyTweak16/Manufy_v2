@@ -84,9 +84,13 @@
               <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
             </div>
             <div class="wo-status">
-              <ion-icon class="ion-padding-end" color="warning" name="lock-open" slot="start"></ion-icon> 
+              <ion-icon class="ion-padding-end" color="{{pm.status === 'Not started' ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}" 
+                        name="{{pm.status === 'Not started' ? 'lock-open' : (pm.status === 'In progress' ? 'sync' : 'lock-closed') }}" slot="start">
+              </ion-icon>
               <ion-text color="warning">
-                <p>{{pm.status}}</p>
+                <ion-text color="{{ (pm.status === 'Not started') ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}">
+                  <p>{{pm.status}}</p>   
+                </ion-text>
               </ion-text>
             </div>       
           </ion-label>

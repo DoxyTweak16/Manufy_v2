@@ -9,9 +9,9 @@ export class PreventiveMaintenanceService {
 
   constructor(private pmRepo : PmRepoService) { }
 
-  getMaintenanceListByDate(selectedDate : Date) {
-   return this.pmRepo.getMaintenanceListByDate(selectedDate);
-  }
+  //getMaintenanceListByDate(selectedDate : Date) {
+  // return this.pmRepo.getMaintenanceListByDate(selectedDate);
+  //}
 
   getMaintenanceByMonth(month, year) {
     return this.pmRepo.getMaintenanceByMonth(month, year);

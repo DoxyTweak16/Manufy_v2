@@ -20,10 +20,10 @@ export class WoRepoService {
   }
 
   getWO() {
-    // return this.firestore.collection('work_orders').doc(id).get();
-    // const work_order_doc = await this.firestore.collection('work_orders').doc(id).get(); // Devolve observable
+  //  // return this.firestore.collection('work_orders').doc(id).get();
+  //  // const work_order_doc = await this.firestore.collection('work_orders').doc(id).get(); // Devolve observable
     return this.afs.collection('work_orders');
- }
+  }
 
  updateWorkOrderStatus(id: string, changes: Partial<WorkOrder>) {
   return this.afs.doc(`work_orders/${id}`).update(changes);

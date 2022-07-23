@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 })
 export class WorkOrderService {
 
-  constructor(private wo_repo : WoRepoService, private userService : UserService, private laborService : LaborService) { }
+  constructor(private wo_repo : WoRepoService, private userService : UserService) { }
 
   static asset_unavailability_check(hours : any, minutes : any) {
 

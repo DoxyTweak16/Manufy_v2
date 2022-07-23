@@ -52,9 +52,17 @@ export class LoginPage implements OnInit {
         this.router.navigate(['/']);
       })
       .catch( error => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+
         this.loading.dismiss();
-        this.loginToast(error.message);
-        console.log("Login error: ", error.message);
+
+        if (errorCode === 'auth/wrong-password') {
+          this.loginToast("Wrong password. Please try again.", "danger");
+        } else {
+          this.loginToast(errorMessage, "danger");
+        }
+
       });
 
     }
@@ -69,11 +77,11 @@ export class LoginPage implements OnInit {
     this.loading.present();
   }
 
-  async loginToast(msg: string) {
+  async loginToast(msg : string, color = "secondary") {
     const toast = await this.toastController.create({
       message: msg,
       duration: 3000,
-      color: "danger"
+      color: color
     });
     toast.present();
   }

@@ -9,9 +9,9 @@ export class PmRepoService {
 
   constructor(private afs : AngularFirestore) { }
 
-  getMaintenanceListByDate(selectedDate : Date) {
-   
-  }
+  //getMaintenanceListByDate(selectedDate : Date) {
+  // 
+  //}
 
   getMaintenanceByMonth(month, year) {
     return this.afs.collection<PreventiveMaintenance>('preventive_maintenance', ref => ref
