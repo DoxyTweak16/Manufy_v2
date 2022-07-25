@@ -166,7 +166,7 @@
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
       <ion-item lines="none" color="light">
-        <ion-textarea autocapitalize​="sentences" clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
+        <ion-textarea clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
           spellcheck="true" required="true" pattern="text" name="maintenance_summary" [(ngModel)]="maintenance_summary">
         </ion-textarea>
       </ion-item>
@@ -272,7 +272,7 @@
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
       <ion-item lines="none" color="light">
-        <ion-textarea autocapitalize​="sentences" rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (work_order|async)?.summary }}">
+        <ion-textarea rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (work_order|async)?.summary }}">
         </ion-textarea>
       </ion-item>
 
