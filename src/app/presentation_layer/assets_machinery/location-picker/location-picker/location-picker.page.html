@@ -7,9 +7,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen="true">
 
-  <ion-searchbar showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
+  <ion-searchbar class="ion-padding-horizontal" showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
 
   <form id="locationPickerForm" #laborForm="ngForm" (submit)="submitSelection()" novalidate>
 
@@ -39,9 +39,11 @@
    </ion-item>
 
    <ion-toolbar>
-    <ion-button type="submit" form="locationPickerForm" class="ion-margin-vertical" color="primary" expand="block">
-      Assign
-    </ion-button>
+    <div class="ion-padding-horizontal">
+      <ion-button type="submit" form="locationPickerForm" class="ion-margin-vertical" color="primary" expand="block">
+        Assign
+      </ion-button>
+    </div>
   </ion-toolbar>
  
   </form>

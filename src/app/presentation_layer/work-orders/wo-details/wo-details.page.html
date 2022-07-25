@@ -166,7 +166,7 @@
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
       <ion-item lines="none" color="light">
-        <ion-textarea clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
+        <ion-textarea autocapitalize​="sentences" clearInput placeholder=" Details go here." rows=4 inputmode="text" enterkeyhint="done"
           spellcheck="true" required="true" pattern="text" name="maintenance_summary" [(ngModel)]="maintenance_summary">
         </ion-textarea>
       </ion-item>
@@ -222,7 +222,7 @@
       <div>
         <p> <strong>Asset Unavailability</strong> </p>
       </div>
-      <ion-item lines="none">
+      <ion-item lines="none" button [routerLink]="['/asset-details', (work_order | async)?.asset]">
 
         <!--Display asset image-->
         <ng-container *ngIf="(work_order | async)?.asset_img; else loading">
@@ -272,7 +272,7 @@
         <p> <strong>Maintenance Summary</strong> </p>
       </div>
       <ion-item lines="none" color="light">
-        <ion-textarea rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (work_order|async)?.summary }}">
+        <ion-textarea autocapitalize​="sentences" rows=4 disabled="true" pattern="text" name="maintenance_summary" value="{{ (work_order|async)?.summary }}">
         </ion-textarea>
       </ion-item>
 
@@ -303,7 +303,7 @@
       <div>
         <p> <strong>Asset Unavailability</strong> </p>
       </div>
-      <ion-item lines="none">
+      <ion-item lines="none" button [routerLink]="['/asset-details', (work_order | async)?.asset]">
         <ion-avatar slot="start">
           <!-- <img src="assets/escada_rolante.jpg" /> -->
           <ion-img [src]=" (work_order | async)?.asset_img | async" alt="asset"></ion-img>

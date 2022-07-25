@@ -8,7 +8,7 @@
 
 </ion-header>
 
-<ion-content class="ion-padding-start ion-padding-end" fullscreen="True">
+<ion-content fullscreen="True">
 
   <div class="grid">
     <div class="grid-item">
@@ -37,15 +37,15 @@
         <ion-item class="ion-align-items-start" *ngFor="let pm of monthlyPM | async" [routerLink]="['/pm-details', pm.$key]">
           <ion-label>
             <h2><strong>{{pm.name}}</strong></h2> 
-            <div class="wo-status">
+            <div class="wo-status ion-text-wrap">
               <p class="">Start date:</p>
               <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
             </div>
-            <div class="wo-status">
+            <div class="wo-status ion-text-wrap">
               <p class="">Due date: </p>
               <p class="">{{pm.due_date | date: 'dd/MM/yyyy h:mm'}}</p>
             </div>
-            <div class="wo-status">
+            <div class="wo-status ion-text-wrap">
               <ion-icon class="ion-padding-end" color="{{pm.status === 'Not started' ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}" 
                         name="{{pm.status === 'Not started' ? 'lock-open' : (pm.status === 'In progress' ? 'sync' : 'lock-closed') }}" slot="start">
               </ion-icon>
@@ -75,20 +75,20 @@
         <ion-item class="ion-align-items-start" *ngFor="let pm of dailyPM | async" [routerLink]="['/pm-details', pm.$key]">
           <ion-label>
             <h2><strong>{{pm.name}}</strong></h2> 
-            <div class="wo-status">
+            <div class="wo-status ion-text-wrap">
               <p class="">Start date:</p>
               <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
             </div>
-            <div class="wo-status">
+            <div class="wo-status ion-text-wrap">
               <p class="">Due date: </p>
               <p class="">{{pm.start_date | date: 'dd/MM/yyyy h:mm'}}</p>
             </div>
-            <div class="wo-status">
+            <div class="wo-status ion-text-wrap">
               <ion-icon class="ion-padding-end" color="{{pm.status === 'Not started' ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}" 
                         name="{{pm.status === 'Not started' ? 'lock-open' : (pm.status === 'In progress' ? 'sync' : 'lock-closed') }}" slot="start">
               </ion-icon>
               <ion-text color="warning">
-                <ion-text color="{{ (pm.status === 'Not started') ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}">
+                <ion-text class="ion-text-wrap" color="{{ (pm.status === 'Not started') ? 'warning' : (pm.status === 'In progress' ? 'secondary' : 'medium') }}">
                   <p>{{pm.status}}</p>   
                 </ion-text>
               </ion-text>

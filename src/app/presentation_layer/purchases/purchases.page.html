@@ -10,7 +10,7 @@
 
 <ion-content fullscreen="True">
 
-  <ion-searchbar showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
+  <ion-searchbar class="ion-padding-horizontal" showCancelButton="focus" (ionInput)="handleInput($event)"></ion-searchbar>
 
   <ion-list >
     <ion-item-divider></ion-item-divider>
@@ -19,11 +19,13 @@
       
       <ion-item class="ion-align-items-start" [routerLink]="['/purchase-order', po.$key]">
         <ion-label> 
-          <h2><strong>{{po.name}}</strong></h2>
-          <ion-text color="primary"> <p><strong>{{po.total_cost}} €</strong></p> </ion-text>
-          <ion-text> <p>Submitted by: <a>{{po.requester_username}}</a> </p> </ion-text>
-          <ion-text color="{{ po.status === 'Awaiting Approval' ? 'warning' : (po.status === 'Rejected' ? 'danger' : 'success') }}">
+          <ion-text class="ion-text-wrap">
+            <h2><strong>{{po.name}}</strong></h2>
+            <ion-text color="primary"> <p><strong>{{po.total_cost}} €</strong></p> </ion-text>
+            <ion-text> <p>Submitted by: <a>{{po.requester_username}}</a> </p> </ion-text>
+            <ion-text color="{{ po.status === 'Awaiting Approval' ? 'warning' : (po.status === 'Rejected' ? 'danger' : 'success') }}">
             <h2> <strong>{{po.status}}</strong> </h2>   
+          </ion-text>
           </ion-text>
         </ion-label>
         <ion-label slot="end">

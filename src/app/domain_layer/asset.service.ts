@@ -33,6 +33,7 @@ export class AssetService {
     console.log("location_desc: ", location_desc);
 
     //Adicionar entry ao array de alterações de localizações
+    console.log("New date: ", new Date().toLocaleString('en-GB').slice(0, -3).replace(',',''))
     const loc_history_entry = {date: new Date().toLocaleString().slice(0, -3).replace(',',''), location: location_id, technician: 'afoliveira'};
 
     const newPartialAssetData = {location: location_id, location_desc: location_desc, location_history: arrayUnion(loc_history_entry)};
